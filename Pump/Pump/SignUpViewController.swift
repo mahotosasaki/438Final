@@ -9,6 +9,8 @@
 //https://stackoverflow.com/questions/31728680/how-to-make-an-uipickerview-with-a-done-button
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -26,6 +28,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var displayNameField: UITextField!
     
     @IBOutlet weak var nameField: UITextField!
+    
+    @IBOutlet weak var emailField: UITextField!
+    
+    @IBOutlet weak var passwordField: UITextField!
     
     let imagePicker = UIImagePickerController()
     
@@ -126,5 +132,54 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         experienceField.text = pickerOptions[row]
     }
+    
+    func signUpUser(){
+        // add users to user auth
+        Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { res, err  in
+            if err != nil{
+                print("error creating user")
+                print(err!)
+            } else {
+                // add user to users collection
+                let db = Firestore.firestore()
+                
+                db.collection("users").addDocument(data: ["uid": res!.user.uid, "username": self.displayNameField.text!, "height": self.heightField.text!, "weight": self.weightField.text!, "experience": self.experienceField.text!]) {(err) in
+                    
+                    if err != nil{
+                        print("error adding to users collection")
+                        print(err!)
+                    }
+                }
+            }
+        
+        }
+    }
+    
+    func validateSignUp() -> Bool{
+        return checkEmail(emailField.text!) && checkPassword(passwordField.text!)
+    }
+    
+    func checkEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
+    func checkPassword(_ password: String) -> Bool {
+        let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$"
+
+        let passPred = NSPredicate(format:"SELF MATCHES %@", passwordRegex)
+        return passPred.evaluate(with: password)
+    }
+    
+    
+    @IBAction func signUp(_ sender: Any) {
+        if validateSignUp(){
+            signUpUser()
+        } else {
+            // UI warnings here
+        }
+    }
+    
 }
