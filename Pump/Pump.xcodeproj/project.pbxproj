@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		404F0888231BA4606F498D91 /* Pods_Pump.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B0215708C2A440DDE356A60 /* Pods_Pump.framework */; };
+		5CACF45D2575C5370022A7D7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CACF45C2575C5370022A7D7 /* SearchViewController.swift */; };
+		5CACF45F2575F20E0022A7D7 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */; };
 		66778AEE2565C82300655344 /* LabelCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66778AED2565C82300655344 /* LabelCellTableViewCell.swift */; };
 		66A5B14C25623B3600732C1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5B14B25623B3600732C1C /* AppDelegate.swift */; };
 		66A5B14E25623B3600732C1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5B14D25623B3600732C1C /* SceneDelegate.swift */; };
@@ -26,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		4B0215708C2A440DDE356A60 /* Pods_Pump.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pump.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CACF45C2575C5370022A7D7 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		66778AED2565C82300655344 /* LabelCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCellTableViewCell.swift; sourceTree = "<group>"; };
 		66A5B14825623B3600732C1C /* Pump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A5B14B25623B3600732C1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 				87354AB3256F292400030386 /* ProfilePageViewController.swift */,
 				66A5B14F25623B3600732C1C /* ViewController.swift */,
 				66A9F9E925636CFC00A03760 /* CreateWorkoutViewController.swift */,
+				5CACF45C2575C5370022A7D7 /* SearchViewController.swift */,
+				5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */,
 			);
 			path = Contoller;
 			sourceTree = "<group>";
@@ -256,7 +262,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				66A5B15025623B3600732C1C /* ViewController.swift in Sources */,
+				5CACF45D2575C5370022A7D7 /* SearchViewController.swift in Sources */,
 				66A5B14C25623B3600732C1C /* AppDelegate.swift in Sources */,
+				5CACF45F2575F20E0022A7D7 /* NotificationsViewController.swift in Sources */,
 				66778AEE2565C82300655344 /* LabelCellTableViewCell.swift in Sources */,
 				66A9F9F62563771700A03760 /* DeleteWorkoutTableViewCell.swift in Sources */,
 				87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */,

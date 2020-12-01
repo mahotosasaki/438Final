@@ -59,6 +59,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         signUpButton.backgroundColor = UIColor.systemTeal
         signUpButton.setTitleColor(.white, for: .normal)
         
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
 
         let toolbar = UIToolbar()
         toolbar.barStyle = .default
@@ -80,7 +82,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         experienceField.resignFirstResponder()
     }
     
-    @objc func imageTapped() {
+    @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let alert = UIAlertController(title: "Choose Image", message: "Choose an image from your camera roll or take a picture", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
             self.openCamera()
@@ -111,7 +113,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         present(imagePicker, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ imagePicker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
         guard let image = info[.editedImage] as? UIImage else {return}
         profileImage.image = image
         dismiss(animated: true, completion: nil)

@@ -8,4 +8,6 @@ target 'Pump' do
   #  Pods for Pump
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift
+  
 end

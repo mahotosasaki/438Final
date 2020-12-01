@@ -36,6 +36,9 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         picker.delegate = self
         picker.allowsEditing = true
         // Do any additional setup after loading the view.
+        
+        
+        
     }
     // https://stackoverflow.com/questions/41717115/how-to-make-uiimagepickercontroller-for-camera-and-photo-library-at-the-same-tim
     @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
@@ -70,6 +73,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
         guard let image = info[.editedImage] as? UIImage else {return}
         profileImage.image = image
         dismiss(animated: true, completion: nil)

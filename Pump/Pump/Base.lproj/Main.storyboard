@@ -70,13 +70,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IbF-ya-Dfo">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IbF-ya-Dfo">
                                 <rect key="frame" x="0.0" y="94" width="375" height="209"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xCy-2a-anf">
-                                        <rect key="frame" x="112" y="8" width="150" height="150"/>
+                                        <rect key="frame" x="112" y="8" width="151" height="150"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="150" id="DGt-cD-oiT"/>
                                             <constraint firstAttribute="height" constant="150" id="hCG-F0-Khk"/>
                                         </constraints>
                                     </imageView>
@@ -153,6 +152,7 @@
                             <constraint firstItem="GMD-2L-o7h" firstAttribute="bottom" secondItem="N4d-cD-tOS" secondAttribute="bottom" id="bXj-Yt-ayM"/>
                             <constraint firstItem="GMD-2L-o7h" firstAttribute="bottom" secondItem="a5S-Jf-yFo" secondAttribute="bottom" constant="85" id="dRc-Rr-O1g"/>
                             <constraint firstItem="N4d-cD-tOS" firstAttribute="top" secondItem="a5S-Jf-yFo" secondAttribute="bottom" constant="35" id="ePq-el-K2e"/>
+                            <constraint firstAttribute="bottom" secondItem="IbF-ya-Dfo" secondAttribute="bottom" constant="509" id="gKA-Wd-1gp"/>
                             <constraint firstItem="N4d-cD-tOS" firstAttribute="leading" secondItem="GMD-2L-o7h" secondAttribute="leading" constant="20" id="mDa-3T-TDJ"/>
                             <constraint firstItem="a5S-Jf-yFo" firstAttribute="leading" secondItem="GMD-2L-o7h" secondAttribute="leading" constant="37" id="mRR-AN-uvd"/>
                             <constraint firstItem="IbF-ya-Dfo" firstAttribute="top" secondItem="GMD-2L-o7h" secondAttribute="top" constant="50" id="ocm-AG-w6C"/>
@@ -511,10 +511,10 @@
             </objects>
             <point key="canvasLocation" x="1510" y="-635"/>
         </scene>
-        <!--View Controller-->
+        <!--Notifications View Controller-->
         <scene sceneID="vDY-6m-Dyr">
             <objects>
-                <viewController id="s7N-IB-l1H" sceneMemberID="viewController">
+                <viewController id="s7N-IB-l1H" customClass="NotificationsViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HjH-6k-z72">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -544,15 +544,18 @@
                         <viewLayoutGuide key="safeArea" id="o5i-j7-UqN"/>
                     </view>
                     <navigationItem key="navigationItem" id="vqK-yB-udg"/>
+                    <connections>
+                        <outlet property="tableView" destination="OVe-XR-fNH" id="UVj-y4-qfu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v59-O6-Jkf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1510" y="1357"/>
         </scene>
-        <!--View Controller-->
+        <!--Search View Controller-->
         <scene sceneID="GQx-Nr-WKR">
             <objects>
-                <viewController id="fXS-IY-FRY" sceneMemberID="viewController">
+                <viewController id="fXS-IY-FRY" customClass="SearchViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KIh-Py-ui4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -564,6 +567,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="searchUsers:" destination="fXS-IY-FRY" eventType="editingChanged" id="beW-FT-fsK"/>
+                                </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bdk-mW-uDy">
                                 <rect key="frame" x="0.0" y="128" width="375" height="601"/>
@@ -593,6 +599,9 @@
                         <viewLayoutGuide key="safeArea" id="3Rb-rj-ver"/>
                     </view>
                     <navigationItem key="navigationItem" id="srg-uo-pao"/>
+                    <connections>
+                        <outlet property="tableView" destination="Bdk-mW-uDy" id="6uB-M7-JI0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JFK-k5-Snh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -600,7 +609,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QtI-ac-cTE"/>
+        <segue reference="Sjv-4h-nCn"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bell.fill" catalog="system" width="128" height="124"/>
