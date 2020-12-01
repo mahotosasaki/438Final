@@ -117,30 +117,30 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
         
         //adding a post with the struct
         //need to figure out decodable stuff
-        var myPost: Post
-        myPost.likes = 0
-        myPost.title = tableData[0]
-        //need to get actual user id
-        myPost.userId = "currentUser"
-        var j = 1
-        while j < tableData.count {
-            var ex: Exercise
-            ex.exerciseName = tableData[j]
-            j = j+1
-            ex.reps = Int(tableData[j]) ?? 0
-            j = j+1
-            ex.sets = Int(tableData[j]) ?? 0
-            j = j+1
-            myPost.exercises.append(ex)
-        }
-        
-        db.collection("posts").addDocument(data: myPost) {(err) in
-        
-            if err != nil{
-                print("error adding to posts collection")
-                print(err!)
-            }
-        }//
+//        var myPost: Post
+//        myPost.likes = 0
+//        myPost.title = tableData[0]
+//        //need to get actual user id
+//        myPost.userId = "currentUser"
+//        var j = 1
+//        while j < tableData.count {
+//            var ex: Exercise
+//            ex.exerciseName = tableData[j]
+//            j = j+1
+//            ex.reps = Int(tableData[j]) ?? 0
+//            j = j+1
+//            ex.sets = Int(tableData[j]) ?? 0
+//            j = j+1
+//            myPost.exercises.append(ex)
+//        }
+//        
+//        db.collection("posts").addDocument(data: myPost) {(err) in
+//        
+//            if err != nil{
+//                print("error adding to posts collection")
+//                print(err!)
+//            }
+//        }//
     }
     
     @objc func doneButtonPressed(){
