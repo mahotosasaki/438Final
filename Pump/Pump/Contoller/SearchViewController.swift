@@ -14,7 +14,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     //used as the list of users will need to change to a struct instead
     //but for now this will do just to test if we got data
-    var listOfProfiles = [""]
+    var listOfProfiles = [User]()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfProfiles.count
@@ -23,7 +23,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myCell = UITableViewCell(style: .default, reuseIdentifier: nil)
         //appending username to list of results
-        myCell.textLabel!.text = listOfProfiles[indexPath.row]
+        myCell.textLabel!.text = listOfProfiles[indexPath.row].username
         //maybe also add their profile picture to the cell?
         return myCell
     }
@@ -42,7 +42,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         else {
         let userRefs = db.collection("users")
             let results = userRefs.order(by: "username").start(at: [search]).end(at: ["\u{f8ff}"])
-            //let results = userRefs.whereField("username", isEqualTo: search)
         results.getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("No results: \(err)")
@@ -55,7 +54,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                         //adding the username to the array if it starts with our search word
                         let res = document.data()["username"] as! String
                         if res.hasPrefix(search) {
-                            self.listOfProfiles.append(document.data()["username"] as! String) }
+                            var userInfo: User?
+                            //the default is created when users don't have all their info filled out. might be a better way to structure this line tho rather than how i have it
+                            try? userInfo = document.data(as:User.self)
+                            self.listOfProfiles.append(userInfo ?? User(experience: "err", following: ["err"], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0)) }
                     }
                 //updating table
                 self.tableView.reloadData()
@@ -65,12 +67,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
         }
         
-        /*finding the posts of a user
-        var user = "someguysid"
-        //need to get that persons id maybe
-        let postRefs = db.collection("posts")
-        var posts = postRefs.whereField("userid", isEqualTo: user)
-         */
+        
     }
     
     @IBOutlet weak var tableView: UITableView!

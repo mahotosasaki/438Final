@@ -257,6 +257,7 @@
                     <connections>
                         <outlet property="editButton" destination="Wo0-qt-W52" id="ePi-Cf-SRW"/>
                         <outlet property="profileImage" destination="d4J-yu-cbG" id="ZeV-ou-Jh1"/>
+                        <outlet property="profileName" destination="xaD-h5-t3c" id="o5z-MU-VQp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0b-aj-aBX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

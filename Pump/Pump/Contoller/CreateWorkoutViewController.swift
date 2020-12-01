@@ -8,20 +8,11 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
     
-    struct Post: Codable {
-        var exercises: [Exercise]
-        var likes: Int
-        var title: String
-        var userId: String
-    }
+    let db = Firestore.firestore()
     
-    struct Exercise: Codable {
-        var exerciseName: String
-        var reps: Int
-        var sets: Int
-    }
     
     @IBOutlet weak var tableView: UITableView!
     var numTableViewSections = 6
@@ -86,61 +77,36 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
         tableData[textField.tag] = textField.text ?? ""
     }
     
-    @IBAction func postButtonPressed(_ sender: UIButton) {
+    @IBAction func postButtonPressed(_ sender: UIButton){
         hidePickerView()
         //print(tableData)
         
         
-        //adding a post without struct
-        let db = Firestore.firestore()
-        var i = 2
-        var exArr  = [[ : ]]
-        exArr.removeAll()
-        var exDic: [String: AnyObject] = [:]
-        while i < tableData.count {
-            exDic["exercise"] = tableData[i] as AnyObject
-            i = i+1
-            exDic["reps"] = tableData[i] as AnyObject
-            i = i+1
-            exDic["sets"] = tableData[i] as AnyObject
-            i = i+2
-            exArr.append(exDic)
-        }
-        //need to fix so we add actual user id
-        db.collection("posts").addDocument(data: ["duration": 1, "exercises":exArr, "likes":0 , "title":tableData[0], "userid": "currentuser"]) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
+
         
         //adding a post with the struct
-        //need to figure out decodable stuff
-//        var myPost: Post
-//        myPost.likes = 0
-//        myPost.title = tableData[0]
-//        //need to get actual user id
-//        myPost.userId = "currentUser"
-//        var j = 1
-//        while j < tableData.count {
-//            var ex: Exercise
-//            ex.exerciseName = tableData[j]
-//            j = j+1
-//            ex.reps = Int(tableData[j]) ?? 0
-//            j = j+1
-//            ex.sets = Int(tableData[j]) ?? 0
-//            j = j+1
-//            myPost.exercises.append(ex)
-//        }
-//        
-//        db.collection("posts").addDocument(data: myPost) {(err) in
-//        
-//            if err != nil{
-//                print("error adding to posts collection")
-//                print(err!)
-//            }
-//        }//
+        //the variable j is used for indexing specific values from our tableData array
+        var j = 2
+        var exerciseDict = [[String:String]]()
+        while j < tableData.count {
+            var ex = [String:String]()
+            ex["exercise"] = tableData[j]
+            j = j+1
+            ex["reps"] = tableData[j]
+            j = j+1
+            ex["sets"] = tableData[j]
+            j = j+2
+            exerciseDict.append(ex)
+        }
+        //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
+        var myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: "currentUser")
+        //printing struct to see layout for debugging purposes
+        print (myPost)
+        do {
+            //adding our post struct to database
+           let _ = try db.collection("posts").addDocument(from: myPost) }
+        catch {print (error)}
+        
     }
     
     @objc func doneButtonPressed(){

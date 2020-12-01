@@ -7,11 +7,19 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class ProfilePageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var userPosts = [Post]()
+    //we need to figure out how we want to keep track of the userlogged in. I have a hardcoded value for now
+    var currUser = "tester"
+    let db = Firestore.firestore()
+    
     @IBOutlet weak var profileImage: UIImageView!
     
+    @IBOutlet weak var profileName: UILabel!
     @IBOutlet weak var editButton: UIButton!
     
     let picker = UIImagePickerController()
@@ -38,7 +46,26 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         // Do any additional setup after loading the view.
         
         
-        
+        //creating a user Struct as an example
+        var userStruct: User?
+        let userRef = db.collection("users")
+        let call = userRef.whereField("username", isEqualTo: currUser)
+       
+        call.getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("No results: \(err)")
+            
+        } else {
+            
+                for document in querySnapshot!.documents {
+                    //sets our userstruct variable to what the document recieved from our call
+                    try? userStruct = document.data(as: User.self)
+                    //sending our userstruct to generatepagedetails function so it can alter the actually page with user info
+                    self.generatePageDetails(userDetails: userStruct!)
+                }
+            
+            }
+        }
     }
     // https://stackoverflow.com/questions/41717115/how-to-make-uiimagepickercontroller-for-camera-and-photo-library-at-the-same-tim
     @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
@@ -79,5 +106,17 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         dismiss(animated: true, completion: nil)
     }
     
+    //changes profile page info with struct data
+    //need to finish filling in once we figure out how to upload and recieve profile pictures
+    func generatePageDetails(userDetails: User) {
+        profileName.text = userDetails.name
+        
+        /*if we were to also show all the posts of the user on the profile page. not finished 
+        var user = "someguysid"
+        //need to get that persons id maybe
+        let postRefs = db.collection("posts")
+        userPosts = postRefs.whereField("userid", isEqualTo: currUser)
+         */
+    }
 
 }
