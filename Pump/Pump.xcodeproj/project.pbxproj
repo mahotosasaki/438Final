@@ -26,6 +26,7 @@
 		66A9F9F62563771700A03760 /* DeleteWorkoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A9F9F52563771700A03760 /* DeleteWorkoutTableViewCell.swift */; };
 		87354AB4256F292400030386 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB3256F292400030386 /* ProfilePageViewController.swift */; };
 		87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB5256F3A2700030386 /* SignUpViewController.swift */; };
+		8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8758D7B325776CE100564491 /* CoreDataFunctions.swift */; };
 		D6A59CCD2568641700B9603C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6A59CCC2568641700B9603C /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		7BBBE49E6C8C89BAE9217BDE /* Pods-Pump.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.release.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.release.xcconfig"; sourceTree = "<group>"; };
 		87354AB3256F292400030386 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfilePageViewController.swift; path = Pump/ProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		87354AB5256F3A2700030386 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Pump/SignUpViewController.swift; sourceTree = SOURCE_ROOT; };
+		8758D7B325776CE100564491 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
 		90631284BF15E4E2CD733A74 /* Pods-Pump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.debug.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.debug.xcconfig"; sourceTree = "<group>"; };
 		D6A59CCC2568641700B9603C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +120,7 @@
 				5C0846A22576D06F007F3E01 /* User.swift */,
 				5C0846A42576D07A007F3E01 /* Post.swift */,
 				5C0846A62576D085007F3E01 /* Notification.swift */,
+				8758D7B325776CE100564491 /* CoreDataFunctions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				5C0846A72576D085007F3E01 /* Notification.swift in Sources */,
 				66A9F9F42563762A00A03760 /* TextFieldTableViewCell.swift in Sources */,
 				66A5B14E25623B3600732C1C /* SceneDelegate.swift in Sources */,
+				8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */,
 				66A5B15625623B3600732C1C /* Pump.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

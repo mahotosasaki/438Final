@@ -51,7 +51,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
                 print("in a doc in querysnapshot")
             try? notiStruct = document.data(as:Notification.self)
                 self.notifications.append(notiStruct ?? Notification(postId: "err", receiverId: "err", senderId: "err"))
-                print (notiStruct)
+                print (notiStruct ?? "unknown error")
             }
             }
         }

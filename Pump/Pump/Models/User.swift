@@ -17,5 +17,6 @@ struct User: Codable {
     var uid: String
     var username: String
     var weight: Double
+    var email: String
     
 }

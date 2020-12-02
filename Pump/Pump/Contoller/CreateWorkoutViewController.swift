@@ -99,7 +99,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
             exerciseDict.append(ex)
         }
         //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
-        var myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: "currentUser")
+        let myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: "currentUser")
         //printing struct to see layout for debugging purposes
         print (myPost)
         do {

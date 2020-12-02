@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import CoreData
 
 class ProfilePageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -47,24 +48,34 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         
         
         //creating a user Struct as an example
-        var userStruct: User?
-        let userRef = db.collection("users")
-        let call = userRef.whereField("username", isEqualTo: currUser)
-       
-        call.getDocuments() { (querySnapshot, err) in
-        if let err = err {
-            print("No results: \(err)")
-            
-        } else {
-            
-                for document in querySnapshot!.documents {
-                    //sets our userstruct variable to what the document recieved from our call
-                    try? userStruct = document.data(as: User.self)
-                    //sending our userstruct to generatepagedetails function so it can alter the actually page with user info
-                    self.generatePageDetails(userDetails: userStruct!)
-                }
-            
+//        var userStruct: User?
+//        let userRef = db.collection("users")
+//        let call = userRef.whereField("username", isEqualTo: currUser)
+//
+//        call.getDocuments() { (querySnapshot, err) in
+//        if let err = err {
+//            print("No results: \(err)")
+//
+//        } else {
+//
+//                for document in querySnapshot!.documents {
+//                    //sets our userstruct variable to what the document recieved from our call
+//                    try? userStruct = document.data(as: User.self)
+//                    //sending our userstruct to generatepagedetails function so it can alter the actually page with user info
+//                    self.generatePageDetails(userDetails: userStruct!)
+//                }
+//
+//            }
+//        }
+        var array = [NSManagedObject]()
+        array = CoreDataFunctions.getData()
+        if array.count > 0{
+            let user = array.last
+            if let base64image = user?.value(forKey: "profile_pic") as? String {
+                let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
+                self.profileImage.image = UIImage(data: data)
             }
+            self.profileName.text = user?.value(forKey: "name") as? String ?? "name"
         }
     }
     // https://stackoverflow.com/questions/41717115/how-to-make-uiimagepickercontroller-for-camera-and-photo-library-at-the-same-tim

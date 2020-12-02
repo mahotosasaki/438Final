@@ -11,6 +11,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import CoreData
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -33,10 +34,11 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBOutlet weak var passwordField: UITextField!
     
+    @IBOutlet weak var errorLabel: UILabel!
     let imagePicker = UIImagePickerController()
     
     let pickerOptions = ["Beginner", "Intermediate", "Advanced"]
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
@@ -140,26 +142,53 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         // add users to user auth
         Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { res, err  in
             if err != nil{
-                print("error creating user")
-                print(err!)
-            } else {
+                let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error") Please try again", preferredStyle: .alert)
+                alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+                
+            }
+            else {
                 // add user to users collection
                 let db = Firestore.firestore()
                 
-                db.collection("users").addDocument(data: ["uid": res!.user.uid, "username": self.displayNameField.text!, "height": self.heightField.text!, "weight": self.weightField.text!, "experience": self.experienceField.text!]) {(err) in
+                let height = Double(self.heightField.text ?? "0.0")
+                let weight = Double(self.weightField.text ?? "0.0")
+                
+                db.collection("users").addDocument(data: ["uid": res!.user.uid, "username": self.displayNameField.text ?? "", "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": ""]) {(err) in
                     
                     if err != nil{
-                        print("error adding to users collection")
-                        print(err!)
+                        let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error") Please try again", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        return
                     }
+                    
+                    
+                    
+                    let user = User(experience: self.experienceField.text ?? "Beginner", following: [], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: res!.user.uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
+                    
+                    CoreDataFunctions.save(user)
+                    
                 }
             }
+//            if let tabViewController = self.storyboard?.instantiateViewController(identifier: "TabViewController") as? UITabBarController {
+//                self.present(tabViewController, animated: true, completion: nil)
+//            }
+//            var viewControllers = self.navigationController?.viewControllers
+//            viewControllers.remove(at: viewControllers.count - 1)
+//            self.navigationController?.setViewControllers(viewControllers, animated: true)
+            self.performSegue(withIdentifier: "showTabBar", sender: self)
         
         }
     }
     
     func validateSignUp() -> Bool{
-        return checkEmail(emailField.text!) && checkPassword(passwordField.text!)
+        return checkEmail(emailField.text ?? "") && checkPassword(passwordField.text ?? "")
+    }
+    
+    func checkFields() -> Bool {
+        return (nameField.text?.count ?? 0 > 0) && (passwordField.text?.count ?? 0 > 0) && (emailField.text?.count ?? 0 > 0)
     }
     
     func checkEmail(_ email: String) -> Bool {
@@ -177,11 +206,31 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
-    @IBAction func signUp(_ sender: Any) {
-        if validateSignUp(){
-            signUpUser()
-        } else {
+    @IBAction func signUp(_ sender: UIButton) {
+        if checkFields(){
+            if validateSignUp() {
+                errorLabel.text = nil
+                signUpUser()
+            }
+            else {
+                if !checkEmail(emailField.text ?? "") && !checkPassword(passwordField.text ?? ""){
+                    errorLabel.text = "Please enter a valid email and password"
+                }
+                else if !checkEmail(emailField.text ?? "") {
+                    errorLabel.text = "Please enter a valid email"
+                }
+                else {
+                    errorLabel.text = "Please enter a valid password"
+                }
+            }
+        }
+        else {
             // UI warnings here
+//            let alert = UIAlertController(title: "Error", message: "One or more fields is blank. Please try again", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//            return
+            errorLabel.text = "One or more required fields is blank"
         }
     }
     

@@ -57,7 +57,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                             var userInfo: User?
                             //the default is created when users don't have all their info filled out. might be a better way to structure this line tho rather than how i have it
                             try? userInfo = document.data(as:User.self)
-                            self.listOfProfiles.append(userInfo ?? User(experience: "err", following: ["err"], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0)) }
+                            self.listOfProfiles.append(userInfo ?? User(experience: "err", following: ["err"], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err")) }
                     }
                 //updating table
                 self.tableView.reloadData()
