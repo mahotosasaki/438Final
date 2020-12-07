@@ -28,6 +28,7 @@
 		87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB5256F3A2700030386 /* SignUpViewController.swift */; };
 		8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8758D7B325776CE100564491 /* CoreDataFunctions.swift */; };
 		D6A59CCD2568641700B9603C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6A59CCC2568641700B9603C /* GoogleService-Info.plist */; };
+		D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		8758D7B325776CE100564491 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
 		90631284BF15E4E2CD733A74 /* Pods-Pump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.debug.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.debug.xcconfig"; sourceTree = "<group>"; };
 		D6A59CCC2568641700B9603C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				87354AB5256F3A2700030386 /* SignUpViewController.swift */,
+				D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */,
 				87354AB3256F292400030386 /* ProfilePageViewController.swift */,
 				66A5B14F25623B3600732C1C /* ViewController.swift */,
 				66A9F9E925636CFC00A03760 /* CreateWorkoutViewController.swift */,
@@ -280,6 +283,7 @@
 				5CACF45F2575F20E0022A7D7 /* NotificationsViewController.swift in Sources */,
 				5C0846A52576D07A007F3E01 /* Post.swift in Sources */,
 				66778AEE2565C82300655344 /* LabelCellTableViewCell.swift in Sources */,
+				D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */,
 				66A9F9F62563771700A03760 /* DeleteWorkoutTableViewCell.swift in Sources */,
 				87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */,
 				87354AB4256F292400030386 /* ProfilePageViewController.swift in Sources */,
