@@ -79,20 +79,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="nf2-9r-dZ9">
-                                <rect key="frame" x="37" y="254" width="300" height="208"/>
+                                <rect key="frame" x="37" y="254" width="300" height="260"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3ZI-Uz-ppF">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="53.333333333333336"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hpe-DA-Oj5">
-                                        <rect key="frame" x="0.0" y="86" width="300" height="36"/>
+                                        <rect key="frame" x="0.0" y="103.3333333333333" width="300" height="53.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXr-n0-n1C">
-                                        <rect key="frame" x="0.0" y="172" width="300" height="36"/>
+                                        <rect key="frame" x="0.0" y="206.66666666666669" width="300" height="53.333333333333314"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="aK4-Ee-kd1"/>
                                         </constraints>
@@ -265,12 +265,12 @@
                         <viewLayoutGuide key="safeArea" id="GMD-2L-o7h"/>
                     </view>
                     <connections>
-                        <outlet property="displayNameField" destination="0vy-xT-fJh" id="6a4-W3-bh2"/>
+                        <outlet property="displayNameField" destination="0vy-xT-fJh" id="oKh-RP-0rX"/>
                         <outlet property="emailField" destination="KnX-gk-3fz" id="zHu-V7-1AF"/>
                         <outlet property="errorLabel" destination="Hh8-gb-0mx" id="bA2-j8-GQ1"/>
                         <outlet property="experienceField" destination="O5k-Kg-J9c" id="cHp-Yi-MGn"/>
                         <outlet property="heightField" destination="nuU-T1-9bL" id="a5W-Y0-TBt"/>
-                        <outlet property="nameField" destination="KnX-gk-3fz" id="u9a-ge-W0y"/>
+                        <outlet property="nameField" destination="lZU-n8-cWu" id="4tJ-Xa-FM5"/>
                         <outlet property="passwordField" destination="tn0-LJ-r32" id="iPF-IU-Bb1"/>
                         <outlet property="profileImage" destination="xCy-2a-anf" id="yTO-md-llO"/>
                         <outlet property="signUpButton" destination="N4d-cD-tOS" id="OSL-eo-3Le"/>

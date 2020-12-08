@@ -28,9 +28,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBOutlet weak var displayNameField: UITextField!
     
-    @IBOutlet weak var nameField: UITextField!
-    
     @IBOutlet weak var emailField: UITextField!
+    
+    @IBOutlet weak var nameField: UITextField!
     
     @IBOutlet weak var passwordField: UITextField!
     
@@ -155,7 +155,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 let height = Double(self.heightField.text ?? "0.0")
                 let weight = Double(self.weightField.text ?? "0.0")
                 
-                db.collection("users").addDocument(data: ["uid": res!.user.uid, "username": self.displayNameField.text ?? "", "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": ""]) {(err) in
+                db.collection("users").document(res!.user.uid).setData(["uid": res!.user.uid, "username": self.displayNameField.text ?? "", "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": ""]) {(err) in
                     
                     if err != nil{
                         let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error") Please try again", preferredStyle: .alert)
