@@ -130,4 +130,12 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
          */
     }
 
+    @IBAction func editProfile(_ sender: UIButton) {
+        var exercises = [[String: String]]()
+        exercises.append(["exercises": "bench", "reps": "5", "sets": "5"])
+        exercises.append(["exercises": "squuats", "reps": "10", "sets": "2"])
+        let post = Post(exercises: exercises, likes: 0, title: "TestPost", userId: "currentUser")
+        let detailed = DetailedWorkoutController(post: post)
+        navigationController?.pushViewController(detailed, animated: true)
+    }
 }

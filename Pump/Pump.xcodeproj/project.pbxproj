@@ -27,6 +27,7 @@
 		87354AB4256F292400030386 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB3256F292400030386 /* ProfilePageViewController.swift */; };
 		87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB5256F3A2700030386 /* SignUpViewController.swift */; };
 		8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8758D7B325776CE100564491 /* CoreDataFunctions.swift */; };
+		87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D55D3425808E15001422BB /* DetailedWorkoutController.swift */; };
 		D6A59CCD2568641700B9603C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6A59CCC2568641700B9603C /* GoogleService-Info.plist */; };
 		D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */; };
 /* End PBXBuildFile section */
@@ -55,6 +56,7 @@
 		87354AB3256F292400030386 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfilePageViewController.swift; path = Pump/ProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		87354AB5256F3A2700030386 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Pump/SignUpViewController.swift; sourceTree = SOURCE_ROOT; };
 		8758D7B325776CE100564491 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
+		87D55D3425808E15001422BB /* DetailedWorkoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedWorkoutController.swift; sourceTree = "<group>"; };
 		90631284BF15E4E2CD733A74 /* Pods-Pump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.debug.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.debug.xcconfig"; sourceTree = "<group>"; };
 		D6A59CCC2568641700B9603C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				66A9F9E925636CFC00A03760 /* CreateWorkoutViewController.swift */,
 				5CACF45C2575C5370022A7D7 /* SearchViewController.swift */,
 				5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */,
+				87D55D3425808E15001422BB /* DetailedWorkoutController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C0846A32576D06F007F3E01 /* User.swift in Sources */,
+				87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */,
 				66A5B15025623B3600732C1C /* ViewController.swift in Sources */,
 				5CACF45D2575C5370022A7D7 /* SearchViewController.swift in Sources */,
 				66A5B14C25623B3600732C1C /* AppDelegate.swift in Sources */,

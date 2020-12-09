@@ -16,7 +16,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var numTableViewSections = 6
-    var numExerciseComponents = 4
+    let numExerciseComponents = 4
     var fontSize:CGFloat = 14
     var tableTextField:[String] = []
     var tableData:[String] = ["", "", "", "1" ,"1"]

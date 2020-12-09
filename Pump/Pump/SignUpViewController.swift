@@ -11,6 +11,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
 import CoreData
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -35,6 +36,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var passwordField: UITextField!
     
     @IBOutlet weak var errorLabel: UILabel!
+    
+    var imageURL = ""
+    
     let imagePicker = UIImagePickerController()
     
     let pickerOptions = ["Beginner", "Intermediate", "Advanced"]
@@ -137,7 +141,24 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         experienceField.text = pickerOptions[row]
     }
-    
+    func sendToFirebase(_ uid:String) {
+        let height = Double(self.heightField.text ?? "0.0")
+        let weight = Double(self.weightField.text ?? "0.0")
+        let db = Firestore.firestore()
+        db.collection("users").document(uid).setData(["uid": uid, "username": self.displayNameField.text ?? "", "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": self.imageURL]) {(err) in
+            
+            if err != nil{
+                let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error.") Please try again", preferredStyle: .alert)
+                alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+
+            let user = User(experience: self.experienceField.text ?? "Beginner", following: [], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
+            
+            CoreDataFunctions.save(user)
+        }
+    }
     func signUpUser(){
         // add users to user auth
         Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { res, err  in
@@ -150,27 +171,30 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             }
             else {
                 // add user to users collection
-                let db = Firestore.firestore()
-                
-                let height = Double(self.heightField.text ?? "0.0")
-                let weight = Double(self.weightField.text ?? "0.0")
-                
-                db.collection("users").document(res!.user.uid).setData(["uid": res!.user.uid, "username": self.displayNameField.text ?? "", "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": ""]) {(err) in
-                    
-                    if err != nil{
-                        let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error") Please try again", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                        return
+                if let image = self.profileImage.image {
+                    let ref = Storage.storage().reference().child("\(res!.user.uid).jpg")
+                    ref.putData(image.pngData()!, metadata: nil) { (metadata, error) in
+                        if error != nil {
+                            print("error saving image")
+                        }
+                        else {
+                            ref.downloadURL { (url, error2) in
+                                if error2 != nil {
+                                    print("error grabbing image url")
+                                }
+                                else {
+                                    guard let downloadURL = url else {return}
+                                    self.imageURL = downloadURL.absoluteString
+                                    self.sendToFirebase(res!.user.uid)
+                                }
+                            }
+                        }
                     }
-                    
-                    
-                    
-                    let user = User(experience: self.experienceField.text ?? "Beginner", following: [], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: res!.user.uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
-                    
-                    CoreDataFunctions.save(user)
-                    
                 }
+                else {
+                    self.sendToFirebase(res!.user.uid)
+                }
+                
             }
 //            if let tabViewController = self.storyboard?.instantiateViewController(identifier: "TabViewController") as? UITabBarController {
 //                self.present(tabViewController, animated: true, completion: nil)

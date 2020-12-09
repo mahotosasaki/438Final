@@ -13,3 +13,7 @@ class DeleteWorkoutTableViewCell: UITableViewCell {
     @IBOutlet weak var exerciseLabel:UILabel!
     @IBOutlet weak var deleteButton:UIButton!
 }
+
+class ExerciseWorkoutTableViewCell: UITableViewCell {
+    @IBOutlet weak var exerciseLabel:UILabel!
+}
