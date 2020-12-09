@@ -141,6 +141,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         experienceField.text = pickerOptions[row]
     }
+    
+    // SEND USER INFO TO USER COLLECTION
     func sendToFirebase(_ uid:String) {
         let height = Double(self.heightField.text ?? "0.0")
         let weight = Double(self.weightField.text ?? "0.0")
@@ -159,6 +161,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             CoreDataFunctions.save(user)
         }
     }
+    
+    // ADD USER TO FIREBASE USER AUTH
     func signUpUser(){
         // add users to user auth
         Auth.auth().createUser(withEmail: emailField.text!, password: passwordField.text!) { res, err  in
@@ -207,14 +211,17 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
+    // VALIDATE EMAIL, PASSWORD, DISPLAY NAME
     func validateSignUp() -> Bool{
         return checkEmail(emailField.text ?? "") && checkPassword(passwordField.text ?? "") && checkDisplayName(displayNameField.text ?? "")
     }
     
+    // CHECK FIELDS ARE FILLED
     func checkFields() -> Bool {
         return (nameField.text?.count ?? 0 > 0) && (passwordField.text?.count ?? 0 > 0) && (emailField.text?.count ?? 0 > 0) && (displayNameField.text?.count ?? 0 > 0)
     }
     
+    // EMAIL REGEX
     func checkEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 
@@ -222,6 +229,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return emailPred.evaluate(with: email)
     }
     
+    // PASSWORD REGEX
     func checkPassword(_ password: String) -> Bool {
         let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$"
 
@@ -229,6 +237,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return passPred.evaluate(with: password)
     }
     
+    // DISPLAY NAME REGEX AND UNIQUENESS
     func checkDisplayName(_ displayName: String) -> Bool{
         
         let displayNameRegex = "^\\w{7,18}$"
@@ -253,6 +262,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
+    // ACTION ON SIGN UP BUTTON TAPPED
     @IBAction func signUp(_ sender: UIButton) {
         if checkFields(){
             
