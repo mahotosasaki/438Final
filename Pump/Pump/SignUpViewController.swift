@@ -208,11 +208,11 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func validateSignUp() -> Bool{
-        return checkEmail(emailField.text ?? "") && checkPassword(passwordField.text ?? "")
+        return checkEmail(emailField.text ?? "") && checkPassword(passwordField.text ?? "") && checkDisplayName(displayNameField.text ?? "")
     }
     
     func checkFields() -> Bool {
-        return (nameField.text?.count ?? 0 > 0) && (passwordField.text?.count ?? 0 > 0) && (emailField.text?.count ?? 0 > 0)
+        return (nameField.text?.count ?? 0 > 0) && (passwordField.text?.count ?? 0 > 0) && (emailField.text?.count ?? 0 > 0) && (displayNameField.text?.count ?? 0 > 0)
     }
     
     func checkEmail(_ email: String) -> Bool {
@@ -229,9 +229,33 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return passPred.evaluate(with: password)
     }
     
+    func checkDisplayName(_ displayName: String) -> Bool{
+        
+        let displayNameRegex = "^\\w{7,18}$"
+
+        let displayPred = NSPredicate(format:"SELF MATCHES %@", displayNameRegex)
+       
+        if !displayPred.evaluate(with: displayName){
+            return false
+        }
+        
+        var flag = true
+        
+        let db = Firestore.firestore()
+        
+        db.collection("users").whereField("username", isEqualTo: displayNameField.text!).getDocuments { (res, err) in
+            if(res?.count != 0){
+                flag = false
+            }
+        }
+            
+        return flag
+    }
+    
     
     @IBAction func signUp(_ sender: UIButton) {
         if checkFields(){
+            
             if validateSignUp() {
                 errorLabel.text = nil
                 signUpUser()
@@ -243,8 +267,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 else if !checkEmail(emailField.text ?? "") {
                     errorLabel.text = "Please enter a valid email"
                 }
-                else {
+                else if !checkPassword(passwordField.text ?? ""){
                     errorLabel.text = "Please enter a valid password"
+                } else {
+                    errorLabel.text = "Username is already taken"
                 }
             }
         }
