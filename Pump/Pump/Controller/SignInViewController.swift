@@ -17,6 +17,8 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var signInButton: UIButton!
     
+    @IBOutlet weak var errorLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,25 +44,30 @@ class SignInViewController: UIViewController {
             Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { authResult, error in
                 if let error = error as NSError? {
                     switch AuthErrorCode(rawValue: error.code) {
-                    case .operationNotAllowed:
-                        print("not allowed")
-                    case .wrongPassword:
-                        print("wrong password")
-                    case .invalidEmail:
-                        print("wrong email")
-                    default:
-                        print("Error: \(error.localizedDescription)")
+                        case .operationNotAllowed:
+                            print("not allowed")
+                        case .wrongPassword:
+                            self.errorLabel.text = "Invalid password"
+                        case .invalidEmail:
+                            self.errorLabel.text = "Invalid email"
+                        case .userNotFound:
+                             self.errorLabel.text = "User does not exist"
+                        default:
+                            print("Error: \(error.localizedDescription)")
                     }
                     
                   } else {
                     print("User signs in successfully")
-                    let userInfo = Auth.auth().currentUser
-                    let email = userInfo?.email
-                    print(userInfo)
+//                    let userInfo = Auth.auth().currentUser
+                    self.performSegue(withIdentifier: "showTabBar", sender: self)
                   }
                 }
         } else {
-            print("invalid")
+            if !checkEmail(emailField.text!){
+                errorLabel.text = "Enter a valid email address"
+            } else {
+                errorLabel.text = "Enter a valid password"
+            }
         }
     }
 
