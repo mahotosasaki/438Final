@@ -9,14 +9,14 @@
 import Foundation
 import FirebaseFirestoreSwift
 struct User: Codable {
-    var experience: String
-    var following: [String]
-    var height: Double
-    var name: String
+    var experience: String?
+    var following: [String]?
+    var height: Double?
+    var name: String?
     var profile_pic: String
     var uid: String
     var username: String
-    var weight: Double
+    var weight: Double?
     var email: String
     
 }

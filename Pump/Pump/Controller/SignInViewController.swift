@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import CoreData
 
 class SignInViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
@@ -59,6 +60,16 @@ class SignInViewController: UIViewController {
                   } else {
                     print("User signs in successfully")
 //                    let userInfo = Auth.auth().currentUser
+                    let email = Auth.auth().currentUser?.email
+                    var array = [NSManagedObject]()
+                    array = CoreDataFunctions.getData()
+                    for i in 0..<array.count {
+                        if(array[i].value(forKey: "email") as? String ?? "email" == email){
+                            print(array[i].value(forKey: "uid") as? String ?? "uid")
+                            userID = array[i].value(forKey: "uid") as? String ?? "uid"
+                        }
+                        
+                    }
                     self.performSegue(withIdentifier: "showTabBar", sender: self)
                   }
                 }

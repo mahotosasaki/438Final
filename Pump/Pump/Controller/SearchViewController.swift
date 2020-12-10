@@ -36,35 +36,46 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func searchUsers(_ sender: UITextField) {
         let db = Firestore.firestore()
-        let search:String = sender.text ?? " "
+        //let search:String = sender.text ?? ""
         
-        if (search == "") {}
-        else {
-        let userRefs = db.collection("users")
-            let results = userRefs.order(by: "username").start(at: [search]).end(at: ["\u{f8ff}"])
-        results.getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("No results: \(err)")
-                
-            } else {
-                self.listOfProfiles.removeAll()
-                    for document in querySnapshot!.documents {
-                        //print(" for result of \(search) :  \(document.documentID) => \(document.data())")
-                        
-                        //adding the username to the array if it starts with our search word
-                        let res = document.data()["username"] as! String
-                        if res.hasPrefix(search) {
-                            var userInfo: User?
-                            //the default is created when users don't have all their info filled out. might be a better way to structure this line tho rather than how i have it
-                            try? userInfo = document.data(as:User.self)
-                            self.listOfProfiles.append(userInfo ?? User(experience: "err", following: ["err"], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err")) }
+        guard let search:String = sender.text else {
+            print ("inside 42")
+            return
+        }
+        print ("results: " + search)
+        self.listOfProfiles.removeAll()
+        
+        if (search == ""){
+            self.tableView.reloadData()
+        } else {
+            DispatchQueue.global().async {
+                do{
+                    let userRefs = db.collection("users")
+                    let results = userRefs.order(by: "username").start(at: [search]).end(at: ["\u{f8ff}"])
+                    results.getDocuments() { (querySnapshot, err) in
+                        if let err = err {
+                            print("No results: \(err)")
+                        } else {
+                            //self.listOfProfiles.removeAll()
+                            for document in querySnapshot!.documents {
+                                //print(" for result of \(search) :  \(document.documentID) => \(document.data())")
+                                
+                                //adding the username to the array if it starts with our search word
+                                let res = document.data()["username"] as! String
+                                if res.hasPrefix(search) {
+                                    var userInfo: User?
+                                    //the default is created when users don't have all their info filled out. might be a better way to structure this line tho rather than how i have it
+                                    try? userInfo = document.data(as:User.self)
+                                    self.listOfProfiles.append(userInfo ?? User(experience: "err", following: ["err"], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err")) }
+                            }
+                            //updating table
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
+                        }
                     }
-                //updating table
-                self.tableView.reloadData()
-                self.setupTableView()
                 }
             }
-            
         }
         
         
@@ -74,6 +85,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupTableView()
     }
     
     

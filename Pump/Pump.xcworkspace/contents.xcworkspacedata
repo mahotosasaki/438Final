@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/mosasaki/Documents/438Final/Pump/Pump/Controller/DetailedWorkoutViewController.swift">
+   </FileRef>
+   <FileRef
       location = "group:Pump.xcodeproj">
    </FileRef>
    <FileRef

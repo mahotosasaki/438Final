@@ -8,6 +8,9 @@
 
 import UIKit
 import FirebaseFirestore
+
+var userID:String = ""
+
 class ViewController: UIViewController {
 
 
