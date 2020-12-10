@@ -9,10 +9,18 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
+import FirebaseStorage
+
+class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let db = Firestore.firestore()
     
+    
+    @IBOutlet weak var imageView: UIImageView!
+    let imagePicker = UIImagePickerController()
+    var picturePath = ""
+    var exerciseArray:[Exercise] = []
+    var workout = Workout(userID: userID, title: "", likes: "0", picturePath: "", exercises: [])
     
     @IBOutlet weak var tableView: UITableView!
     var numTableViewSections = 6
@@ -62,6 +70,18 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
         tapGesture.cancelsTouchesInView = false
+        
+        //image
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        imageView.layer.borderWidth=1.0
+        imageView.layer.masksToBounds = false
+        imageView.layer.borderColor = UIColor.black.cgColor
+        imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -79,43 +99,94 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func postButtonPressed(_ sender: UIButton){
         hidePickerView()
-        //print(tableData)
         
-        
-
-        
-        //adding a post with the struct
-        //the variable j is used for indexing specific values from our tableData array
-        var j = 2
-        var exerciseDict = [[String:String]]()
-        while j < tableData.count {
-            var ex = [String:String]()
-            ex["exercise"] = tableData[j]
-            j = j+1
-            ex["reps"] = tableData[j]
-            j = j+1
-            ex["sets"] = tableData[j]
-            j = j+2
-            exerciseDict.append(ex)
+        let title = tableData[0]
+        exerciseArray = []
+        let num = tableData.count / 4
+        for i in 1...num {
+            print("i: \(i)")
+            let factor = 4 * (i-1)
+            let exercise = Exercise(number: tableData[1+factor], name: tableData[2+factor], reps: tableData[3+factor], sets: tableData[4+factor])
+            print(exercise)
+            exerciseArray.append(exercise)
         }
-        //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
-        let myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
-        //printing struct to see layout for debugging purposes
-        print (myPost)
-        do {
-            //adding our post struct to database
-           let _ = try db.collection("posts").addDocument(from: myPost) }
-        catch {print (error)}
+        
+         workout = Workout(userID: userID, title: title, likes: "0", picturePath: picturePath, exercises: exerciseArray)
+       
+        let postId = db.collection("posts").document().documentID
+        if let image = self.imageView.image {
+            
+            let ref = Storage.storage().reference().child("\(postId).jpg")
+            ref.putData(image.pngData()!, metadata: nil) { (metadata, error) in
+                if error != nil {
+                    print("error saving image")
+                } else {
+                    ref.downloadURL { (url, error2) in
+                        if error2 != nil {
+                            print("error grabbing image url")
+                        } else {
+                            guard let downloadURL = url else {return}
+                            self.picturePath = downloadURL.absoluteString
+                            self.sendToFirebase(workout: self.workout, postId: postId)
+                        }
+                    }
+                }
+            }
+        } else {
+            self.sendToFirebase(workout: workout, postId: postId)
+        }
         
     }
-    
-    @objc func doneButtonPressed(){
-        hidePickerView()
+    func sendToFirebase(workout:Workout, postId: String) {
+        let db = Firestore.firestore()
+        DispatchQueue.global().async {
+            do {
+                self.workout.picturePath = self.picturePath
+        
+                try db.collection("posts").document(postId).setData(from:self.workout)
+            } catch {
+                print("ERROR")
+            }
+        }
     }
     
+    @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        let alert = UIAlertController(title: "Choose Image", message: "Choose an image from your camera roll or take a picture", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.openCamera()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Library", style: .default, handler: { _ in
+            self.openLibrary()
+        }))
+        
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
+    func openCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            imagePicker.sourceType = .camera
+            present(imagePicker, animated: true, completion: nil)
+        }
+        else {
+            let alert = UIAlertController(title: "Camera Unavailable", message: "The camera cannot be accessed on this device", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+    }
     
+    func openLibrary() {
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else {return}
+        imageView.image = image
+        dismiss(animated: true, completion: nil)
+    }
     /*
      // MARK: - Navigation
      
@@ -188,7 +259,8 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
                 exerciseCell.deleteButton.isHidden = false
             }
             
-            tableData[indexPath.section] = exerciseCell.exerciseLabel.text ?? ""
+            //tableData[indexPath.section] = exerciseCell.exerciseLabel.text ?? ""
+            tableData[indexPath.section] = "\(indexPath.section / numExerciseComponents)"
             return exerciseCell
         } else if indexPath.section % numExerciseComponents == 2 {
             let cell:TextFieldTableViewCell = tableView.dequeueReusableCell(withIdentifier: "workoutCell") as! TextFieldTableViewCell
@@ -221,7 +293,7 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
             
             for i in 1...numExerciseComponents {
                 if i == numExerciseComponents - 1 || i == numExerciseComponents {
-                    tableData.append("0")
+                    tableData.append("1")
                 } else {
                     tableData.append("")
                 }
@@ -239,6 +311,10 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
 }
 
 extension CreateWorkoutViewController: UIPickerViewDataSource, UIPickerViewDelegate  {
+    @objc func doneButtonPressed(){
+        hidePickerView()
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         1
     }

@@ -11,11 +11,11 @@
 		5C0846A32576D06F007F3E01 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0846A22576D06F007F3E01 /* User.swift */; };
 		5C0846A52576D07A007F3E01 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0846A42576D07A007F3E01 /* Post.swift */; };
 		5C0846A72576D085007F3E01 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0846A62576D085007F3E01 /* Notification.swift */; };
+		5C584E4C2582CC9F00D78AF3 /* DetailedPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C584E4B2582CC9F00D78AF3 /* DetailedPostViewController.swift */; };
 		5CACF45D2575C5370022A7D7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CACF45C2575C5370022A7D7 /* SearchViewController.swift */; };
 		5CACF45F2575F20E0022A7D7 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */; };
 		66778AEE2565C82300655344 /* LabelCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66778AED2565C82300655344 /* LabelCellTableViewCell.swift */; };
 		669B59972581F95F007AB9CD /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B59962581F95F007AB9CD /* LabelTableViewCell.swift */; };
-		669B59992581FD7B007AB9CD /* DetailedWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B59982581FD7B007AB9CD /* DetailedWorkoutViewController.swift */; };
 		66A5B14C25623B3600732C1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5B14B25623B3600732C1C /* AppDelegate.swift */; };
 		66A5B14E25623B3600732C1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5B14D25623B3600732C1C /* SceneDelegate.swift */; };
 		66A5B15025623B3600732C1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5B14F25623B3600732C1C /* ViewController.swift */; };
@@ -39,11 +39,11 @@
 		5C0846A22576D06F007F3E01 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5C0846A42576D07A007F3E01 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5C0846A62576D085007F3E01 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		5C584E4B2582CC9F00D78AF3 /* DetailedPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedPostViewController.swift; sourceTree = "<group>"; };
 		5CACF45C2575C5370022A7D7 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		66778AED2565C82300655344 /* LabelCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCellTableViewCell.swift; sourceTree = "<group>"; };
 		669B59962581F95F007AB9CD /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
-		669B59982581FD7B007AB9CD /* DetailedWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailedWorkoutViewController.swift; path = /Users/mosasaki/Documents/438Final/Pump/Pump/Controller/DetailedWorkoutViewController.swift; sourceTree = "<absolute>"; };
 		66A5B14825623B3600732C1C /* Pump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A5B14B25623B3600732C1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66A5B14D25623B3600732C1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 				5CACF45C2575C5370022A7D7 /* SearchViewController.swift */,
 				5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */,
 				87D55D3425808E15001422BB /* DetailedWorkoutController.swift */,
-				669B59982581FD7B007AB9CD /* DetailedWorkoutViewController.swift */,
+				5C584E4B2582CC9F00D78AF3 /* DetailedPostViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -289,12 +289,12 @@
 				87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */,
 				66A5B15025623B3600732C1C /* ViewController.swift in Sources */,
 				5CACF45D2575C5370022A7D7 /* SearchViewController.swift in Sources */,
-				669B59992581FD7B007AB9CD /* DetailedWorkoutViewController.swift in Sources */,
 				66A5B14C25623B3600732C1C /* AppDelegate.swift in Sources */,
 				669B59972581F95F007AB9CD /* LabelTableViewCell.swift in Sources */,
 				5CACF45F2575F20E0022A7D7 /* NotificationsViewController.swift in Sources */,
 				5C0846A52576D07A007F3E01 /* Post.swift in Sources */,
 				66778AEE2565C82300655344 /* LabelCellTableViewCell.swift in Sources */,
+				5C584E4C2582CC9F00D78AF3 /* DetailedPostViewController.swift in Sources */,
 				D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */,
 				66A9F9F62563771700A03760 /* DeleteWorkoutTableViewCell.swift in Sources */,
 				87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */,

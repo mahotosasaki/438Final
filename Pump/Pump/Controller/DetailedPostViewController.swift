@@ -1,24 +1,26 @@
 //
-//  DetailedWorkoutViewControllerTableViewController.swift
+//  DetailedPostViewController.swift
 //  Pump
 //
-//  Created by Mahoto Sasaki on 12/10/20.
+//  Created by Reshad Hamauon on 12/10/20.
 //  Copyright © 2020 mo3aru. All rights reserved.
 //
+
+
 
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class DetailedWorkoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class DetailedPostViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let db = Firestore.firestore()
 
-    var post: Post?
+    var post: Workout?
     var postId: String!
     
     var numExercises = 0
-    let numExerciseComponents = 4
+    let numExerciseComponents = 4 //Exercise struct has 4 fields
     let extraComponents = 1 //includes title and numlikes in tableview
     var fontSize:CGFloat = 14
     
@@ -46,7 +48,7 @@ class DetailedWorkoutViewController: UIViewController, UITableViewDataSource, UI
                         print("No results: \(err)")
                     } else {
                         //print (try? querySnapshot?.data(as:Post.self))
-                        try? self.post = querySnapshot?.data(as:Post.self)
+                        try? self.post = querySnapshot?.data(as:Workout.self)
                         //updating table
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
@@ -97,7 +99,7 @@ class DetailedWorkoutViewController: UIViewController, UITableViewDataSource, UI
             if indexPath.section % 4 == 0 {
                 let cell:LabelCellTableViewCell = tableView.dequeueReusableCell(withIdentifier: "workoutCell") as! LabelCellTableViewCell
                 cell.label.text = "Reps"
-                cell.rightLabel.text = post?.exercises[index]["reps"]
+                cell.rightLabel.text = post?.exercises[index].reps
                 return cell
             } else if indexPath.section % 4 == 1 {
                 let cell:LabelTableViewCell = tableView.dequeueReusableCell(withIdentifier: "labelCell") as! LabelTableViewCell
@@ -105,7 +107,7 @@ class DetailedWorkoutViewController: UIViewController, UITableViewDataSource, UI
                 return cell
             } else if indexPath.section % 4 == 2 {
                 let cell:LabelTableViewCell = tableView.dequeueReusableCell(withIdentifier: "labelCell") as! LabelTableViewCell
-                guard let exerciseTitle = post?.exercises[index]["exercise"] else {
+                guard let exerciseTitle = post?.exercises[index].name else {
                     cell.label.text = "exercise title"
                     return cell
                 }
@@ -114,7 +116,7 @@ class DetailedWorkoutViewController: UIViewController, UITableViewDataSource, UI
             } else {
                 let cell:LabelCellTableViewCell = tableView.dequeueReusableCell(withIdentifier: "workoutCell") as! LabelCellTableViewCell
                 cell.label.text = "Sets"
-                cell.rightLabel.text = post?.exercises[index]["sets"]
+                cell.rightLabel.text = post?.exercises[index].sets
                 return cell
             }
         }
@@ -138,3 +140,4 @@ class DetailedWorkoutViewController: UIViewController, UITableViewDataSource, UI
     }
     
 }
+

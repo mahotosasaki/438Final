@@ -419,7 +419,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3T0-pH-j5g">
-                                <rect key="frame" x="20" y="108" width="335" height="521"/>
+                                <rect key="frame" x="20" y="213" width="335" height="416"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -545,21 +545,31 @@
                                     <action selector="postButtonPressed:" destination="BPP-YS-hD4" eventType="touchUpInside" id="czU-b4-Ykk"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b3l-WU-uxd">
+                                <rect key="frame" x="130" y="88" width="115" height="115"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="b3l-WU-uxd" secondAttribute="height" multiplier="1:1" id="2M4-un-Am8"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="YOl-Kq-C75" firstAttribute="leading" secondItem="DiQ-S2-s8u" secondAttribute="leading" constant="20" id="2Hd-9P-vUq"/>
-                            <constraint firstItem="3T0-pH-j5g" firstAttribute="top" secondItem="DiQ-S2-s8u" secondAttribute="top" constant="20" id="PA5-f8-BbD"/>
+                            <constraint firstItem="DiQ-S2-s8u" firstAttribute="trailing" secondItem="b3l-WU-uxd" secondAttribute="trailing" constant="130" id="9el-gu-QFb"/>
                             <constraint firstItem="DiQ-S2-s8u" firstAttribute="trailing" secondItem="3T0-pH-j5g" secondAttribute="trailing" constant="20" id="R8r-tE-c25"/>
+                            <constraint firstItem="b3l-WU-uxd" firstAttribute="leading" secondItem="DiQ-S2-s8u" secondAttribute="leading" constant="130" id="Tzh-cv-iBi"/>
                             <constraint firstItem="DiQ-S2-s8u" firstAttribute="trailing" secondItem="YOl-Kq-C75" secondAttribute="trailing" constant="20" id="aHg-pc-AsP"/>
+                            <constraint firstItem="b3l-WU-uxd" firstAttribute="top" secondItem="DiQ-S2-s8u" secondAttribute="top" id="dea-Ov-m98"/>
                             <constraint firstItem="3T0-pH-j5g" firstAttribute="leading" secondItem="Fb0-de-dDO" secondAttribute="leading" constant="20" id="emn-V3-xlV"/>
                             <constraint firstItem="DiQ-S2-s8u" firstAttribute="bottom" secondItem="3T0-pH-j5g" secondAttribute="bottom" constant="100" id="nGF-yh-vaB"/>
                             <constraint firstItem="YOl-Kq-C75" firstAttribute="top" secondItem="3T0-pH-j5g" secondAttribute="bottom" constant="20" id="uKL-9A-6GB"/>
+                            <constraint firstItem="3T0-pH-j5g" firstAttribute="top" secondItem="b3l-WU-uxd" secondAttribute="bottom" constant="10" id="vBn-1H-LAU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="DiQ-S2-s8u"/>
                     </view>
                     <navigationItem key="navigationItem" id="cQD-CF-SFT"/>
                     <connections>
+                        <outlet property="imageView" destination="b3l-WU-uxd" id="PDR-YM-8ta"/>
                         <outlet property="tableView" destination="3T0-pH-j5g" id="Qh3-NK-tR8"/>
                     </connections>
                 </viewController>
@@ -864,10 +874,10 @@
             </objects>
             <point key="canvasLocation" x="3143.1999999999998" y="682.75862068965523"/>
         </scene>
-        <!--Detailed Workout View Controller-->
+        <!--Detailed Post View Controller-->
         <scene sceneID="fi7-97-bZO">
             <objects>
-                <viewController id="mHk-wX-yz1" customClass="DetailedWorkoutViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mHk-wX-yz1" customClass="DetailedPostViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rtH-Sn-kkG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -987,7 +997,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="g34-L8-1MY"/>
                     <connections>
-                        <outlet property="tableView" destination="NAH-pK-bt8" id="y7o-5h-Pgo"/>
+                        <outlet property="tableView" destination="NAH-pK-bt8" id="yt3-TK-ifw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vxx-Tv-U46" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

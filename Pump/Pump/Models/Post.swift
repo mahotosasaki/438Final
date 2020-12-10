@@ -16,9 +16,16 @@ struct Post: Codable {
 }
 
 //replace var exercises with 3 arrays: exerciseTitle, exerciseReps, exerciseSets
-struct Exercise {
-    var title: String
-    var reps: Int
-    var sets: Int
+struct Workout: Codable {
+    var userID:String
+    var title:String
+    var likes:String
+    var picturePath:String
+    var exercises:[Exercise]
 }
-
+struct Exercise:Codable {
+    var number:String
+    var name:String
+    var reps:String
+    var sets:String
+}
