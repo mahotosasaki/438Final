@@ -14,6 +14,7 @@ import FirebaseStorage
 class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let db = Firestore.firestore()
+    let ref = Storage.storage().reference()
     
     
     @IBOutlet weak var imageView: UIImageView!
@@ -115,14 +116,41 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
             exerciseDict.append(ex)
         }
         //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
-        let myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
+        var myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
         //printing struct to see layout for debugging purposes
         print (myPost)
-        do {
-            //adding our post struct to database
-           let _ = try db.collection("posts").addDocument(from: myPost) }
-        catch {print (error)}
+        //adding our post struct to database
+        if let image = self.imageView.image {
+            let fileRef = ref.child("postImages\(userID + myPost.title).jpg")
+            fileRef.putData(image.pngData()!, metadata: nil) {(metadata, error) in
+                if error != nil {
+                    print("error saving post image")
+                }
+                else {
+                    fileRef.downloadURL { (url, error) in
+                        if error != nil {
+                            print("error grabing image")
+                        }
+                        else {
+                            guard let downloadURL = url else {return}
+                            myPost.picturePath = downloadURL.absoluteString
+                            self.addPost(myPost)
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            addPost(myPost)
+        }
         
+    }
+    
+    func addPost(_ post: Post) {
+        do {
+            let _ = try db.collection("posts").addDocument(from: post)
+        }
+        catch {print(error)}
     }
     
     

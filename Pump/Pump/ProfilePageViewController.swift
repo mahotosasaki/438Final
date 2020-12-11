@@ -70,12 +70,22 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         var array = [NSManagedObject]()
         array = CoreDataFunctions.getData()
         if array.count > 0{
-            let user = array.last
-            if let base64image = user?.value(forKey: "profile_pic") as? String {
-                let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
-                self.profileImage.image = UIImage(data: data)
+            for i in 0..<array.count {
+                if(array[i].value(forKey: "uid") as? String ?? "uid" == userID){
+                    if let base64image = array[i].value(forKey: "profile_pic") as? String {
+                        let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
+                        self.profileImage.image = UIImage(data: data)
+                    }
+                    self.profileName.text = array[i].value(forKey: "name") as? String ?? "name"
+                }
+                
             }
-            self.profileName.text = user?.value(forKey: "name") as? String ?? "name"
+//            let user = array.last
+//            if let base64image = user?.value(forKey: "profile_pic") as? String {
+//                let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
+//                self.profileImage.image = UIImage(data: data)
+//            }
+//            self.profileName.text = user?.value(forKey: "name") as? String ?? "name"
         }
     }
     // https://stackoverflow.com/questions/41717115/how-to-make-uiimagepickercontroller-for-camera-and-photo-library-at-the-same-tim

@@ -10,18 +10,24 @@ import Foundation
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-class HomepageViewController: UIViewController {
+import FirebaseStorage
+class HomepageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate{
+    
+    @IBOutlet weak var workoutCollectionView: UICollectionView!
     
     let db = Firestore.firestore()
     
     //this is hardcoded, needs to be the actual following list which probably needs to be pulled from coredata
     var userFollowing: [String] = ["X8NgZhN92Rg9vKEhXZgYCJPu41j2", "ji17lTeYQ3QOaM4675OyVQqte0l1"]
     var followingUsers: [User] = []
+    var testPosts: [Post] = []
     //
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchFollowing()
+        workoutCollectionView.delegate = self
+        workoutCollectionView.dataSource = self
         // Do any additional setup after loading the view.
     }
     
@@ -58,7 +64,6 @@ class HomepageViewController: UIViewController {
     
     func fetchPosts(user:User) {
         //print("list of users u follow \(user.username)")
-        var testPosts: [Post] = []
         DispatchQueue.global().async {
             do {
                 let postsRef = self.db.collection("posts")
@@ -73,16 +78,48 @@ class HomepageViewController: UIViewController {
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
                             print(postInfo)
-                            testPosts.append(postInfo ?? Post(exercises: [], likes: 0, title: "err", userId: "err"))
+                            self.testPosts.append(postInfo ?? Post(exercises: [], likes: 0, title: "err", userId: "err"))
                         }
                     }
                     //updating table
                     DispatchQueue.main.async {
-                        //print (testPosts)
+                        if self.testPosts.count == 0 {
+                            let alert = UIAlertController(title: "Error", message: "No Results Found", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        self.workoutCollectionView.reloadData()
                     }
                 }
             }
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return testPosts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = workoutCollectionView.dequeueReusableCell(withReuseIdentifier: "workoutCell", for: indexPath) as! HomePageCollectionViewCell
+        if let imageURL = testPosts[indexPath.row].picturePath{
+            let ref = Storage.storage().reference(forURL: imageURL)
+            ref.downloadURL {(url, error) in
+                if error != nil {
+                    print("uh oh")
+                }
+                else {
+                    let data = try? Data(contentsOf: url!)
+                    let image = UIImage(data: data! as Data)
+                    cell.imageView.image = image
+                }
+            }
+        }
+        else {
+            cell.imageView.image = UIImage()
+        }
+        cell.titleLabel.text = testPosts[indexPath.row].title
+        cell.numLikesLabel.text = "0"
+        return cell
     }
 
 }

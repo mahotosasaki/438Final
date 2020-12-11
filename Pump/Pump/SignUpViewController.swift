@@ -159,6 +159,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             let user = User(experience: self.experienceField.text ?? "Beginner", following: [], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
             
             CoreDataFunctions.save(user)
+            
+            userID = uid
         }
     }
     
@@ -176,7 +178,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             else {
                 // add user to users collection
                 if let image = self.profileImage.image {
-                    let ref = Storage.storage().reference().child("\(res!.user.uid).jpg")
+                    let ref = Storage.storage().reference().child("userImages\(res!.user.uid).jpg")
                     ref.putData(image.pngData()!, metadata: nil) { (metadata, error) in
                         if error != nil {
                             print("error saving image")
@@ -280,7 +282,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 else if !checkPassword(passwordField.text ?? ""){
                     errorLabel.text = "Please enter a valid password"
                 } else {
-                    errorLabel.text = "Username is already taken"
+                    errorLabel.text = "Pleae enter a valid username"
                 }
             }
         }

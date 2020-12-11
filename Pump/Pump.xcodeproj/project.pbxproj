@@ -29,6 +29,7 @@
 		66A9F9F62563771700A03760 /* DeleteWorkoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A9F9F52563771700A03760 /* DeleteWorkoutTableViewCell.swift */; };
 		87354AB4256F292400030386 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB3256F292400030386 /* ProfilePageViewController.swift */; };
 		87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB5256F3A2700030386 /* SignUpViewController.swift */; };
+		87587EE12583FBF200563FD7 /* HomePageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87587EE02583FBF200563FD7 /* HomePageCollectionViewCell.swift */; };
 		8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8758D7B325776CE100564491 /* CoreDataFunctions.swift */; };
 		87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D55D3425808E15001422BB /* DetailedWorkoutController.swift */; };
 		D6A59CCD2568641700B9603C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6A59CCC2568641700B9603C /* GoogleService-Info.plist */; };
@@ -61,6 +62,7 @@
 		7BBBE49E6C8C89BAE9217BDE /* Pods-Pump.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.release.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.release.xcconfig"; sourceTree = "<group>"; };
 		87354AB3256F292400030386 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfilePageViewController.swift; path = Pump/ProfilePageViewController.swift; sourceTree = SOURCE_ROOT; };
 		87354AB5256F3A2700030386 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Pump/SignUpViewController.swift; sourceTree = SOURCE_ROOT; };
+		87587EE02583FBF200563FD7 /* HomePageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCollectionViewCell.swift; sourceTree = "<group>"; };
 		8758D7B325776CE100564491 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
 		87D55D3425808E15001422BB /* DetailedWorkoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedWorkoutController.swift; sourceTree = "<group>"; };
 		90631284BF15E4E2CD733A74 /* Pods-Pump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.debug.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.debug.xcconfig"; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				66778AED2565C82300655344 /* LabelCellTableViewCell.swift */,
 				669B59962581F95F007AB9CD /* LabelTableViewCell.swift */,
 				66A9F9F52563771700A03760 /* DeleteWorkoutTableViewCell.swift */,
+				87587EE02583FBF200563FD7 /* HomePageCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				87354AB4256F292400030386 /* ProfilePageViewController.swift in Sources */,
 				66A9F9EA25636CFC00A03760 /* CreateWorkoutViewController.swift in Sources */,
 				5C0846A72576D085007F3E01 /* Notification.swift in Sources */,
+				87587EE12583FBF200563FD7 /* HomePageCollectionViewCell.swift in Sources */,
 				66A9F9F42563762A00A03760 /* TextFieldTableViewCell.swift in Sources */,
 				5C584E502582FAF600D78AF3 /* HomepageViewController.swift in Sources */,
 				66A5B14E25623B3600732C1C /* SceneDelegate.swift in Sources */,
