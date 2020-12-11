@@ -16,5 +16,6 @@ class HomePageCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var likeButton: UIButton!
     
-    @IBOutlet weak var numLikesLabel: UILabel!  
+    @IBOutlet weak var numLikesLabel: UILabel!
+    
 }

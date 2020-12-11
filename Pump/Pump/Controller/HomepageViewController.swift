@@ -121,5 +121,10 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         cell.numLikesLabel.text = "0"
         return cell
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let workoutVC = DetailedWorkoutController(post: testPosts[indexPath.row])
+//        navigationController?.pushViewController(workoutVC, animated: true)
+//    }
 
 }
