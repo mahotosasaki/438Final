@@ -817,11 +817,47 @@
                     <navigationItem key="navigationItem" id="srg-uo-pao"/>
                     <connections>
                         <outlet property="tableView" destination="Bdk-mW-uDy" id="6uB-M7-JI0"/>
+                        <segue destination="M3F-LR-C66" kind="presentation" identifier="toUserProfileViewController" modalPresentationStyle="fullScreen" id="O5Z-aA-7gy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JFK-k5-Snh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1509.5999999999999" y="23.645320197044335"/>
+        </scene>
+        <!--User Profile View Controller-->
+        <scene sceneID="Wpr-RZ-Jdg">
+            <objects>
+                <viewController id="M3F-LR-C66" customClass="UserProfileViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6ia-VP-2vT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ji4-jX-kEO">
+                                <rect key="frame" x="165" y="92" width="45" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlJ-rD-T2w">
+                                <rect key="frame" x="289" y="87" width="44" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Follow"/>
+                                <connections>
+                                    <action selector="followUser:" destination="M3F-LR-C66" eventType="touchUpInside" id="YWd-hz-APB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="a7P-Lu-foa"/>
+                    </view>
+                    <connections>
+                        <outlet property="usernameLabel" destination="Ji4-jX-kEO" id="mhn-jj-dN5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="izy-oa-4Ug" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2392.8000000000002" y="23.645320197044335"/>
         </scene>
         <!--Detailed Workout Controller-->
         <scene sceneID="ulj-44-cZz">

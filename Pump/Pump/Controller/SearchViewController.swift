@@ -15,7 +15,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     //used as the list of users will need to change to a struct instead
     //but for now this will do just to test if we got data
     var listOfProfiles = [User]()
-    
+    var theRow = 0
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfProfiles.count
     }
@@ -34,15 +34,28 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //print (listOfProfiles.count)
+        theRow = indexPath.row
+        self.performSegue(withIdentifier: "toUserProfileViewController", sender: listOfProfiles[indexPath.row])
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "toUserProfileViewController") {
+            let userVC = segue.destination as? UserProfileViewController
+            userVC?.userProfile = listOfProfiles[theRow]
+            
+        }
+    }
+    
     @IBAction func searchUsers(_ sender: UITextField) {
         let db = Firestore.firestore()
         //let search:String = sender.text ?? ""
         
         guard let search:String = sender.text else {
-            print ("inside 42")
             return
         }
-        print ("results: " + search)
+        //print ("results: " + search)
         self.listOfProfiles.removeAll()
         
         if (search == ""){
@@ -50,13 +63,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         } else {
             DispatchQueue.global().async {
                 do{
+                    
                     let userRefs = db.collection("users")
                     let results = userRefs.order(by: "username").start(at: [search]).end(at: ["\u{f8ff}"])
                     results.getDocuments() { (querySnapshot, err) in
                         if let err = err {
                             print("No results: \(err)")
                         } else {
-                            //self.listOfProfiles.removeAll()
+                            self.listOfProfiles.removeAll()
                             for document in querySnapshot!.documents {
                                 //print(" for result of \(search) :  \(document.documentID) => \(document.data())")
                                 
