@@ -21,7 +21,7 @@ class CoreDataFunctions {
         guard let entity = NSEntityDescription.entity(forEntityName: "UserSaveData", in: managedContext) else {return}
         
         let userToSave = NSManagedObject(entity: entity, insertInto: managedContext)
-        
+        userToSave.setValue(user.following, forKey: "following")
         userToSave.setValue(user.username, forKey: "displayName")
         userToSave.setValue(user.email, forKey: "email")
         userToSave.setValue(user.experience, forKey: "experience")

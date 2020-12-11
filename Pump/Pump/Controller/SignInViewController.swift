@@ -66,7 +66,10 @@ class SignInViewController: UIViewController {
                     for i in 0..<array.count {
                         if(array[i].value(forKey: "email") as? String ?? "email" == email){
                             print(array[i].value(forKey: "uid") as? String ?? "uid")
+                            //setting user id global variable from core data
                             userID = array[i].value(forKey: "uid") as? String ?? "uid"
+                            //following global variable for id's of people we follow
+                            //userFollowing = array[i].value(forKey: "following") as? [String] ?? []
                         }
                         
                     }

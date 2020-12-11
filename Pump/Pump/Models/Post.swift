@@ -13,6 +13,7 @@ struct Post: Codable {
     var likes: Int
     var title: String
     var userId: String
+    var picturePath:String?
 }
 
 //replace var exercises with 3 arrays: exerciseTitle, exerciseReps, exerciseSets

@@ -15,8 +15,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     
     let db = Firestore.firestore()
     var notifications = [Notification]()
-    //will need to change currUser to a user object once we figure out whos logged in
-    var currUser = "testNotifications"
+
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notifications.count
@@ -69,12 +69,12 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
+    
     func fetchNotifications () {
         DispatchQueue.global().async {
             do {
                 var notiStruct: Notification?
                 let notificationRefs = self.db.collection("notifications")
-                //will need to structure currUser differently and maybe reference a userobjects uid instead
                 let call = notificationRefs.whereField("receiverId", isEqualTo: userID)
                 call.getDocuments() { (querySnapshot, err) in
                     if let err = err {
@@ -83,7 +83,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
                         for document in querySnapshot!.documents {
                             try? notiStruct = document.data(as:Notification.self)
                             self.notifications.append(notiStruct ?? Notification(postId: "err", postTitle: "err", receiverId: "err", senderId: "err"))
-                            print (notiStruct ?? "unknown error")
+                            //print (notiStruct ?? "unknown error")
                         }
                     }
                     DispatchQueue.main.async {

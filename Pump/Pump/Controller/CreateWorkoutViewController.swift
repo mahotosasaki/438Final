@@ -100,55 +100,31 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
     @IBAction func postButtonPressed(_ sender: UIButton){
         hidePickerView()
         
-        let title = tableData[0]
-        exerciseArray = []
-        let num = tableData.count / 4
-        for i in 1...num {
-            print("i: \(i)")
-            let factor = 4 * (i-1)
-            let exercise = Exercise(number: tableData[1+factor], name: tableData[2+factor], reps: tableData[3+factor], sets: tableData[4+factor])
-            print(exercise)
-            exerciseArray.append(exercise)
+        //adding a post with the struct
+        //the variable j is used for indexing specific values from our tableData array
+        var j = 2
+        var exerciseDict = [[String:String]]()
+        while j < tableData.count {
+            var ex = [String:String]()
+            ex["exercise"] = tableData[j]
+            j = j+1
+            ex["reps"] = tableData[j]
+            j = j+1
+            ex["sets"] = tableData[j]
+            j = j+2
+            exerciseDict.append(ex)
         }
-        
-         workout = Workout(userID: userID, title: title, likes: "0", picturePath: picturePath, exercises: exerciseArray)
-       
-        let postId = db.collection("posts").document().documentID
-        if let image = self.imageView.image {
-            
-            let ref = Storage.storage().reference().child("\(postId).jpg")
-            ref.putData(image.pngData()!, metadata: nil) { (metadata, error) in
-                if error != nil {
-                    print("error saving image")
-                } else {
-                    ref.downloadURL { (url, error2) in
-                        if error2 != nil {
-                            print("error grabbing image url")
-                        } else {
-                            guard let downloadURL = url else {return}
-                            self.picturePath = downloadURL.absoluteString
-                            self.sendToFirebase(workout: self.workout, postId: postId)
-                        }
-                    }
-                }
-            }
-        } else {
-            self.sendToFirebase(workout: workout, postId: postId)
-        }
+        //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
+        let myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
+        //printing struct to see layout for debugging purposes
+        print (myPost)
+        do {
+            //adding our post struct to database
+           let _ = try db.collection("posts").addDocument(from: myPost) }
+        catch {print (error)}
         
     }
-    func sendToFirebase(workout:Workout, postId: String) {
-        let db = Firestore.firestore()
-        DispatchQueue.global().async {
-            do {
-                self.workout.picturePath = self.picturePath
-        
-                try db.collection("posts").document(postId).setData(from:self.workout)
-            } catch {
-                print("ERROR")
-            }
-        }
-    }
+    
     
     @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let alert = UIAlertController(title: "Choose Image", message: "Choose an image from your camera roll or take a picture", preferredStyle: .actionSheet)
