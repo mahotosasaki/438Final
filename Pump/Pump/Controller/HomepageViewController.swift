@@ -11,7 +11,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
-class HomepageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate{
+class HomepageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     @IBOutlet weak var workoutCollectionView: UICollectionView!
     
@@ -20,7 +20,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     //this is hardcoded, needs to be the actual following list which probably needs to be pulled from coredata
     var userFollowing: [String] = []
     var followingUsers: [User] = []
-    var testPosts: [Post] = []
+    var posts: [Post] = []
     //
     
     override func viewDidLoad() {
@@ -28,36 +28,38 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         getFollowingIds()
         workoutCollectionView.delegate = self
         workoutCollectionView.dataSource = self
-        // Do any additional setup after loading the view.
+        workoutCollectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
     }
     
     func getFollowingIds(){
         DispatchQueue.global().async {
             do {
-                  let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
+                let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
                 
-                    results.getDocuments() { (querySnapshot, err) in
+                results.getDocuments() { (querySnapshot, err) in
                     if let err = err {
                         print("No results: \(err)")
                     } else {
                         for document in querySnapshot!.documents{
                             var userInfo: User?
                             try? userInfo = document.data(as:User.self)
-
+                            
                             print(userInfo)
-
+                            
                             self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
                         }
                     }
                     DispatchQueue.main.async {
-                        self.fetchFollowingUsersObj()
+                        if(!self.userFollowing.isEmpty){
+                            self.fetchFollowingUsersObj()
+                        }
                     }
                 }
             }
         }
         
     }
-
+    
     func fetchFollowingUsersObj() {
         //print("user following \(userFollowing)")
         DispatchQueue.global().async {
@@ -100,16 +102,16 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                         print("No results: \(err)")
                     } else {
                         for document in querySnapshot!.documents {
-                           // print(document.data().map(String.init(describing:)) ?? "nil")
+                            // print(document.data().map(String.init(describing:)) ?? "nil")
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
                             print(postInfo)
-                            self.testPosts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err"))
+                            self.posts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err"))
                         }
                     }
                     //updating table
                     DispatchQueue.main.async {
-                        if self.testPosts.count == 0 {
+                        if self.posts.count == 0 {
                             let alert = UIAlertController(title: "Error", message: "No Results Found", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                             self.present(alert, animated: true, completion: nil)
@@ -122,12 +124,16 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return testPosts.count
+        return posts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.workoutCollectionView.frame.size.width*0.8, height: 350)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = workoutCollectionView.dequeueReusableCell(withReuseIdentifier: "workoutCell", for: indexPath) as! HomePageCollectionViewCell
-        if let imageURL = testPosts[indexPath.row].picturePath{
+        let cell = workoutCollectionView.dequeueReusableCell(withReuseIdentifier: "postCell", for: indexPath) as! PostCell
+        if let imageURL = posts[indexPath.row].picturePath{
             let ref = Storage.storage().reference(forURL: imageURL)
             ref.downloadURL {(url, error) in
                 if error != nil {
@@ -141,16 +147,38 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
             }
         }
         else {
-            cell.imageView.image = UIImage()
+            let rect = CGRect(x: 0,y: 0,width: 120,height: 200)
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: 120, height: 200), true, 1.0)
+            UIColor.gray.set()
+            UIRectFill(rect)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            cell.imageView.image = image
         }
-        cell.titleLabel.text = testPosts[indexPath.row].title
-        cell.numLikesLabel.text = "0"
+        cell.titleLabel.text = posts[indexPath.row].title
+        cell.likesLabel.text = "\(posts[indexPath.row].likes) likes"
+        cell.usernameLabel.text = posts[indexPath.row].userId
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let workoutVC = DetailedWorkoutController(post: testPosts[indexPath.row])
-//        navigationController?.pushViewController(workoutVC, animated: true)
-//    }
-
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//            let detailVC = DetailedPostViewController()
+//            detailVC.post = posts[indexPath.row]
+//            detailVC.postId = posts[indexPath.row].id
+//            navigationController?.pushViewController(detailVC, animated: true)
+             self.performSegue(withIdentifier: "fromHomeToPost", sender: posts[indexPath.row].id)
+        }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //        if (segue.identifier == "toDetailedWorkout") {
+    //
+    //            let detailedPostView = segue.destination as? DetailedWorkoutController
+    //            detailedPostView?.postId = sender as! String
+    //        }
+            if(segue.identifier == "fromHomeToPost") {
+                let detailedPostView = segue.destination as? DetailedPostViewController
+                detailedPostView?.postId = sender as? String
+            }
+        }
+    
 }

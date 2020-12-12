@@ -33,6 +33,7 @@
 		87587EE12583FBF200563FD7 /* HomePageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87587EE02583FBF200563FD7 /* HomePageCollectionViewCell.swift */; };
 		8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8758D7B325776CE100564491 /* CoreDataFunctions.swift */; };
 		87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D55D3425808E15001422BB /* DetailedWorkoutController.swift */; };
+		D61C780325846987008CF1FF /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C780225846987008CF1FF /* PostCell.swift */; };
 		D6A59CCD2568641700B9603C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6A59CCC2568641700B9603C /* GoogleService-Info.plist */; };
 		D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		8758D7B325776CE100564491 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
 		87D55D3425808E15001422BB /* DetailedWorkoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedWorkoutController.swift; sourceTree = "<group>"; };
 		90631284BF15E4E2CD733A74 /* Pods-Pump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.debug.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.debug.xcconfig"; sourceTree = "<group>"; };
+		D61C780225846987008CF1FF /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		D6A59CCC2568641700B9603C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -142,6 +144,7 @@
 		66A9F9E725636C6A00A03760 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D61C780225846987008CF1FF /* PostCell.swift */,
 				66A9F9F32563762A00A03760 /* TextFieldTableViewCell.swift */,
 				66778AED2565C82300655344 /* LabelCellTableViewCell.swift */,
 				669B59962581F95F007AB9CD /* LabelTableViewCell.swift */,
@@ -317,6 +320,7 @@
 				66A5B14E25623B3600732C1C /* SceneDelegate.swift in Sources */,
 				8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */,
 				66A5B15625623B3600732C1C /* Pump.xcdatamodeld in Sources */,
+				D61C780325846987008CF1FF /* PostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

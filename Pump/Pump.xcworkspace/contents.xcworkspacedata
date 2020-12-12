@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/marksigel/Documents/CSE 438S/438Final/Pump/Pump/View/PostCell.swift">
+   </FileRef>
+   <FileRef
       location = "group:Pump.xcodeproj">
    </FileRef>
    <FileRef

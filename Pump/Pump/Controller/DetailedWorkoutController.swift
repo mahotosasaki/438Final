@@ -30,6 +30,7 @@ class DetailedWorkoutController: UIViewController, UITableViewDataSource, UITabl
     /*func likePost() {
         let noti = Notification(postId: post?.id, postTitle: post?.title, receiverId: post?.userID, senderId: userID)
         let notiRef = db.collection("notifications").addDocument(from: noti)
+        self.db.collection("posts").document(post?.id).setData([ "likes": (post?.likes+1)], merge: true)
     }*/
     
     override func viewDidLayoutSubviews() {
