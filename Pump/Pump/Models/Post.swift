@@ -14,6 +14,7 @@ struct Post: Codable {
     var likes: Int
     var title: String
     var userId: String
+    var username: String
     var picturePath:String?
 }
 

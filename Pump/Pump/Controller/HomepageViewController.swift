@@ -106,7 +106,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
                             print(postInfo)
-                            self.posts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err"))
+                            self.posts.append(postInfo ?? Post(id: "err", exercises: [], likes:0, title: "err", userId: "err", username: " ", picturePath: "err"))
                         }
                     }
                     //updating table
@@ -157,7 +157,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         }
         cell.titleLabel.text = posts[indexPath.row].title
         cell.likesLabel.text = "\(posts[indexPath.row].likes) likes"
-        cell.usernameLabel.text = posts[indexPath.row].userId
+        cell.usernameLabel.text = posts[indexPath.row].username
         return cell
     }
     

@@ -72,7 +72,7 @@ class UserProfileViewController: UIViewController {
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
                             //print(postInfo)
-                            self.profilePosts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err"))
+                            self.profilePosts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err", username: "err", picturePath: "" ))
                         }
                     }
                     

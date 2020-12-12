@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 
 var userID:String = ""
-
+var USERNAME: String = " "
 
 class ViewController: UIViewController {
 

@@ -161,6 +161,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             CoreDataFunctions.save(user)
             
             userID = uid
+            USERNAME = user.username
         }
     }
     

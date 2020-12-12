@@ -115,9 +115,9 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
             j = j+2
             exerciseDict.append(ex)
         }
-        //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
+        
         let uniqueId = db.collection("post").document().documentID;
-        var myPost = Post(id: uniqueId, exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
+        var myPost = Post(id: uniqueId, exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID, username: USERNAME, picturePath: "")
         //printing struct to see layout for debugging purposes
         //print (myPost)
         //adding our post struct to database
