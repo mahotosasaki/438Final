@@ -156,7 +156,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 return
             }
 
-            let user = User(experience: self.experienceField.text ?? "Beginner", following: [], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
+            let user = User(experience: self.experienceField.text ?? "Beginner", following: [uid], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
             
             CoreDataFunctions.save(user)
             
