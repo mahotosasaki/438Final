@@ -372,6 +372,27 @@
                                     <action selector="editProfile:" destination="9m4-rP-SK0" eventType="touchUpInside" id="U1i-Nz-O3b"/>
                                 </connections>
                             </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="ife-Oj-rqy">
+                                <rect key="frame" x="0.0" y="430" width="375" height="299"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sF5-sS-dev">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="postCell" id="xkx-al-ybV">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="1Od-Hf-4cz">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -389,14 +410,16 @@
                     </view>
                     <navigationItem key="navigationItem" id="rrh-ux-4Cl"/>
                     <connections>
+                        <outlet property="collectionView" destination="ife-Oj-rqy" id="UFb-6m-eMM"/>
                         <outlet property="editButton" destination="Wo0-qt-W52" id="ePi-Cf-SRW"/>
                         <outlet property="profileImage" destination="d4J-yu-cbG" id="ZeV-ou-Jh1"/>
                         <outlet property="profileName" destination="xaD-h5-t3c" id="o5z-MU-VQp"/>
+                        <segue destination="Vfv-cW-ATp" kind="show" identifier="fromProfileToDetailedVC" id="8D6-Id-R4Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0b-aj-aBX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1509.5999999999999" y="2066.7487684729067"/>
+            <point key="canvasLocation" x="1510" y="2067"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2Fl-Lq-OKf">
@@ -718,7 +741,7 @@
                     <navigationItem key="navigationItem" id="vqK-yB-udg"/>
                     <connections>
                         <outlet property="tableView" destination="OVe-XR-fNH" id="UVj-y4-qfu"/>
-                        <segue destination="mHk-wX-yz1" kind="show" identifier="toDetailedWorkoutViewController" id="YZ4-M2-QXy"/>
+                        <segue destination="Vfv-cW-ATp" kind="show" identifier="toDetailedWorkoutViewController" id="7lX-LM-Ql5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v59-O6-Jkf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -808,18 +831,42 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="UnN-Qb-SVm">
+                                <rect key="frame" x="0.0" y="272" width="375" height="457"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Rc6-G7-GoP">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="postCell" id="Iax-Ub-S28">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="DHR-gM-Jzc">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="a7P-Lu-foa"/>
                     </view>
                     <navigationItem key="navigationItem" id="c68-DO-JiC"/>
                     <connections>
+                        <outlet property="collectionView" destination="UnN-Qb-SVm" id="FgP-f4-Zhy"/>
+                        <outlet property="imageView" destination="a7p-1r-rtM" id="hs9-bL-3Fb"/>
                         <outlet property="usernameLabel" destination="Ji4-jX-kEO" id="mhn-jj-dN5"/>
+                        <segue destination="Vfv-cW-ATp" kind="show" identifier="searchToDetailedVC" id="i9j-g1-Hbk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="izy-oa-4Ug" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2392.8000000000002" y="23.645320197044335"/>
+            <point key="canvasLocation" x="2452" y="24"/>
         </scene>
         <!--Detailed Workout Controller-->
         <scene sceneID="ulj-44-cZz">
@@ -957,7 +1004,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NAH-pK-bt8">
-                                <rect key="frame" x="20" y="108" width="335" height="601"/>
+                                <rect key="frame" x="20" y="64" width="335" height="694"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1069,14 +1116,23 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PIO-zc-gVd"/>
                     </view>
-                    <navigationItem key="navigationItem" id="g34-L8-1MY"/>
+                    <navigationItem key="navigationItem" id="g34-L8-1MY">
+                        <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="2bc-rD-FbB">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gsi-DP-c3k">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="NAH-pK-bt8" id="yt3-TK-ifw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vxx-Tv-U46" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2392.8000000000002" y="1374.384236453202"/>
+            <point key="canvasLocation" x="3201" y="2132"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TXb-A9-Izd">
@@ -1217,8 +1273,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="e0Z-wO-zPc"/>
                     </view>
-                    <navigationItem key="navigationItem" id="yof-vC-XDY"/>
+                    <navigationItem key="navigationItem" id="yof-vC-XDY">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="3R9-0W-d00">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="YbF-ME-ZqR">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Like"/>
+                                <connections>
+                                    <action selector="likeButtonPressed:" destination="Vfv-cW-ATp" eventType="touchUpInside" id="Vkh-ys-uS6"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="likeButton" destination="3R9-0W-d00" id="n8X-nM-G2R"/>
                         <outlet property="tableView" destination="A2l-pK-x5x" id="c61-Et-gak"/>
                     </connections>
                 </viewController>
@@ -1228,6 +1296,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="kau-ga-Ohw"/>
         <segue reference="eft-jx-PHa"/>
     </inferredMetricsTieBreakers>
     <resources>

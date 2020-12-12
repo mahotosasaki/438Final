@@ -66,6 +66,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         if(segue.identifier == "toDetailedWorkoutViewController") {
             let detailedPostView = segue.destination as? DetailedPostViewController
             detailedPostView?.postId = sender as? String
+            detailedPostView?.uniqueSegueIdentifier = "No Like Button"
         }
     }
     

@@ -24,7 +24,10 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
     let extraComponents = 1 //includes title and numlikes in tableview
     var fontSize:CGFloat = 14
     
+    var uniqueSegueIdentifier:String!
+    
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var likeButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +36,14 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         tableView.dataSource = self
         tableView.delegate = self
         fetchPost()
-        print(3/4)
-        print(2/4)
-        print(1/4)
+        
+        if uniqueSegueIdentifier == "No Like Button" {
+            print("No like button")
+            likeButton = UIBarButtonItem(title: "", style:         UIBarButtonItem.Style.plain, target: nil, action: nil)
+
+        } else {
+            print("LIKE BUTTON EXISTS")
+        }
     }
     
     
@@ -55,8 +63,8 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                             if let posts = self.post {
-                                print(posts)
-                                print(posts.exercises.count)
+//                                print(posts)
+//                                print(posts.exercises.count)
                                 self.numExercises = posts.exercises.count
                                 self.tableView.reloadData()
                             }
@@ -67,12 +75,25 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    @IBAction func likeButtonPressed(_ sender: Any) {
+        likePost()
+    }
+    
+    func likePost() {
+        guard let p = post else {
+            print("like failed")
+            return
+        }
+        let noti = Notification(postId: postId, postTitle: p.title, receiverId: p.userId, senderId: userID)
+        let notiRef = try? db.collection("notifications").addDocument(from: noti)
+        self.db.collection("posts").document(postId).setData([ "likes": (p.likes+1)], merge: true)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        print(numExercises * numExerciseComponents + extraComponents)
         return numExercises * numExerciseComponents + extraComponents
     }
     

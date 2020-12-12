@@ -15,6 +15,10 @@ import FirebaseStorage
 class UserProfileViewController: UIViewController {
     let db = Firestore.firestore()
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    
     var userProfile: User!
     var profilePosts: [Post] = []
     var userFollowing: [String] = []
@@ -24,14 +28,63 @@ class UserProfileViewController: UIViewController {
         self.usernameLabel.text = userProfile.username
         // Do any additional setup after loading the view.
         fetchUserPosts()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
+        
+        print("USER PROFILE VIEW CONTROLLER")
+        getProfileImage()
     }
-
+    
+    func getProfileImage(){
+        let data = db.collection("users")
+        let results = data.whereField("uid", isEqualTo: self.userProfile?.uid)
+        
+        results.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("No results: \(err)")
+            } else {
+                print(querySnapshot!.documents)
+                for document in querySnapshot!.documents {
+                    var userInfo: User?
+                    try? userInfo = document.data(as:User.self)
+                    if let imageURL = userInfo?.profile_pic {
+                        if imageURL == "" {
+                            let rect = CGRect(x: 0,y: 0,width: 120,height: 200)
+                            UIGraphicsBeginImageContextWithOptions(CGSize(width: 120, height: 200), true, 1.0)
+                            UIColor.gray.set()
+                            UIRectFill(rect)
+                            let image = UIGraphicsGetImageFromCurrentImageContext()
+                            UIGraphicsEndImageContext()
+                            self.imageView.image = image
+                        } else {
+                            let ref = Storage.storage().reference(forURL: imageURL)
+                            
+                            ref.downloadURL {(url, error) in
+                                if error != nil {
+                                    print("uh oh")
+                                }
+                                else {
+                                    let data = try? Data(contentsOf: url!)
+                                    let image = UIImage(data: data! as Data)
+                                    self.imageView.image = image
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+            }
+        }
+    }
+    
     
     @IBAction func followUser(_ sender: UIButton) {
-       DispatchQueue.global().async {
+        DispatchQueue.global().async {
             do {
-                  let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
-                    results.getDocuments() { (querySnapshot, err) in
+                let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
+                results.getDocuments() { (querySnapshot, err) in
                     if let err = err {
                         print("No results: \(err)")
                     } else {
@@ -46,16 +99,13 @@ class UserProfileViewController: UIViewController {
                         else {
                             self.userFollowing.append(self.userProfile.uid)
                             self.db.collection("users").document(userID).setData([ "following": self.userFollowing], merge: true)
-                            print (self.userFollowing)
+                            print ("USER FOLLOWING \(self.userFollowing.count)")
                         }
                     }
                 }
             }
         }
     }
-
-    @IBOutlet weak var usernameLabel: UILabel!
-    
     
     func fetchUserPosts() {
         DispatchQueue.global().async {
@@ -63,26 +113,91 @@ class UserProfileViewController: UIViewController {
                 let postsRef = self.db.collection("posts")
                 
                 let results = postsRef.whereField("userId", isEqualTo: self.userProfile?.uid)
+                
                 results.getDocuments() { (querySnapshot, err) in
                     if let err = err {
                         print("No results: \(err)")
                     } else {
                         for document in querySnapshot!.documents {
-                           // print(document.data().map(String.init(describing:)) ?? "nil")
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
-                            //print(postInfo)
                             self.profilePosts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err", username: "err", picturePath: "" ))
                         }
                     }
                     
+                    
                     DispatchQueue.main.async {
-                        print(self.profilePosts)
-                       
+                        print("POST COUNT \(self.profilePosts.count)")
+                        self.collectionView.reloadData()
                     }
                 }
             }
         }
     }
-
+    
 }
+
+extension UserProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,numberOfItemsInSection section: Int) -> Int {
+        return profilePosts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.collectionView.frame.size.width*0.8, height: 350)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "postCell", for: indexPath) as! PostCell
+        if let imageURL = profilePosts[indexPath.row].picturePath {
+            if imageURL == "" {
+                let rect = CGRect(x: 0,y: 0,width: 120,height: 200)
+                UIGraphicsBeginImageContextWithOptions(CGSize(width: 120, height: 200), true, 1.0)
+                UIColor.gray.set()
+                UIRectFill(rect)
+                let image = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                cell.imageView.image = image
+            } else {
+                let ref = Storage.storage().reference(forURL: imageURL)
+                
+                ref.downloadURL {(url, error) in
+                    if error != nil {
+                        print("uh oh")
+                    }
+                    else {
+                        let data = try? Data(contentsOf: url!)
+                        let image = UIImage(data: data! as Data)
+                        cell.imageView.image = image
+                    }
+                }
+            }
+        }
+        else {
+            let rect = CGRect(x: 0,y: 0,width: 120,height: 200)
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: 120, height: 200), true, 1.0)
+            UIColor.gray.set()
+            UIRectFill(rect)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            cell.imageView.image = image
+        }
+        cell.titleLabel.text = profilePosts[indexPath.row].title
+        cell.likesLabel.text = "\(profilePosts[indexPath.row].likes) likes"
+        cell.usernameLabel.text = profilePosts[indexPath.row].username
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "searchToDetailedVC", sender: profilePosts[indexPath.row].id)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "searchToDetailedVC") {
+            let detailedPostView = segue.destination as? DetailedPostViewController
+            detailedPostView?.postId = sender as? String
+            detailedPostView?.uniqueSegueIdentifier = "No Like Button"
+        }
+    }
+}
+
