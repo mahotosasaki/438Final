@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "053491F1-CE78-4852-8B6B-8E7B2AEE0D8C"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7791DD63-9427-49A1-90BA-C116A2DB11C8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pump/Controller/HomepageViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "getFollowingIds()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7791DD63-9427-49A1-90BA-C116A2DB11C8 - 2c4113a1de4854da"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Pump.HomepageViewController.getFollowingIds() -&gt; ()"
+                  moduleName = "Pump"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marksigel/Documents/CSE%20438S/438Final/Pump/Pump/Controller/HomepageViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "215">
+               </Location>
+               <Location
+                  uuid = "7791DD63-9427-49A1-90BA-C116A2DB11C8 - 12726d5f15ab362e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Pump.HomepageViewController.getFollowingIds() -&gt; ()"
+                  moduleName = "Pump"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marksigel/Documents/CSE%20438S/438Final/Pump/Pump/Controller/HomepageViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "23">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

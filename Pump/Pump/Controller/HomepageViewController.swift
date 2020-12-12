@@ -18,21 +18,47 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     let db = Firestore.firestore()
     
     //this is hardcoded, needs to be the actual following list which probably needs to be pulled from coredata
-    var userFollowing: [String] = ["X8NgZhN92Rg9vKEhXZgYCJPu41j2", "ji17lTeYQ3QOaM4675OyVQqte0l1"]
+    var userFollowing: [String] = []
     var followingUsers: [User] = []
     var testPosts: [Post] = []
     //
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchFollowing()
+        getFollowingIds()
         workoutCollectionView.delegate = self
         workoutCollectionView.dataSource = self
         // Do any additional setup after loading the view.
     }
     
+    func getFollowingIds(){
+        DispatchQueue.global().async {
+            do {
+                  let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
+                
+                    results.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("No results: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents{
+                            var userInfo: User?
+                            try? userInfo = document.data(as:User.self)
 
-    func fetchFollowing() {
+                            print(userInfo)
+
+                            self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.fetchFollowingUsersObj()
+                    }
+                }
+            }
+        }
+        
+    }
+
+    func fetchFollowingUsersObj() {
         //print("user following \(userFollowing)")
         DispatchQueue.global().async {
             do {
