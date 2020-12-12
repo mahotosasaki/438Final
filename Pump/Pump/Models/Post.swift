@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 struct Post: Codable {
+    var id: String
     var exercises: [[String:String]]
     var likes: Int
     var title: String

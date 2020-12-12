@@ -13,9 +13,11 @@ import FirebaseFirestoreSwift
 import FirebaseStorage
 
 class UserProfileViewController: UIViewController {
+    let db = Firestore.firestore()
+    
     var userProfile: User!
     var profilePosts: [Post] = []
-    let db = Firestore.firestore()
+    var userFollowing: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,15 +28,34 @@ class UserProfileViewController: UIViewController {
 
     
     @IBAction func followUser(_ sender: UIButton) {
-        /*
-        //need to fix this so it gets your actual following list from core data when you sign in, this is a hardcoded example
-        var followingList:[String] = []
-        //adds that id to your following list
-        followingList.append(userProfile.uid)
-        db.collection("users").document(userID).setData([ "following": followingList], merge: true)*/
+       DispatchQueue.global().async {
+            do {
+                  let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
+                    results.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("No results: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents{
+                            var userInfo: User?
+                            try? userInfo = document.data(as:User.self)
+                            self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        if self.userFollowing.contains(self.userProfile.uid) {}
+                        else {
+                            self.userFollowing.append(self.userProfile.uid)
+                            self.db.collection("users").document(userID).setData([ "following": self.userFollowing], merge: true)
+                            print (self.userFollowing)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @IBOutlet weak var usernameLabel: UILabel!
+    
     
     func fetchUserPosts() {
         DispatchQueue.global().async {
@@ -51,7 +72,7 @@ class UserProfileViewController: UIViewController {
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
                             //print(postInfo)
-                            self.profilePosts.append(postInfo ?? Post(exercises: [], likes: 0, title: "err", userId: "err"))
+                            self.profilePosts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err"))
                         }
                     }
                     

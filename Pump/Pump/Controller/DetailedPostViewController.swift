@@ -38,6 +38,8 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         print(1/4)
     }
     
+    
+    
     func fetchPost(){
         DispatchQueue.global().async {
             do{

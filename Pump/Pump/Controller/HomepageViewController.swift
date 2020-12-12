@@ -104,7 +104,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
                             print(postInfo)
-                            self.testPosts.append(postInfo ?? Post(exercises: [], likes: 0, title: "err", userId: "err"))
+                            self.testPosts.append(postInfo ?? Post(id: "", exercises: [], likes: 0, title: "err", userId: "err"))
                         }
                     }
                     //updating table

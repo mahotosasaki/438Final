@@ -116,9 +116,10 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
             exerciseDict.append(ex)
         }
         //creating our Post struct that will be adding to our database. the user is hardcoded because we still need to figure out how to keep track of the logged in user
-        var myPost = Post(exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
+        let uniqueId = db.collection("post").document().documentID;
+        var myPost = Post(id: uniqueId, exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID)
         //printing struct to see layout for debugging purposes
-        print (myPost)
+        //print (myPost)
         //adding our post struct to database
         if let image = self.imageView.image {
             let fileRef = ref.child("postImages\(userID + myPost.title).jpg")
@@ -148,7 +149,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
     
     func addPost(_ post: Post) {
         do {
-            let _ = try db.collection("posts").addDocument(from: post)
+            let _ = try db.collection("posts").document(post.id).setData(from: post)
         }
         catch {print(error)}
     }

@@ -27,6 +27,11 @@ class DetailedWorkoutController: UIViewController, UITableViewDataSource, UITabl
         tableView.delegate = self
     }
     
+    /*func likePost() {
+        let noti = Notification(postId: post?.id, postTitle: post?.title, receiverId: post?.userID, senderId: userID)
+        let notiRef = db.collection("notifications").addDocument(from: noti)
+    }*/
+    
     override func viewDidLayoutSubviews() {
         tableView.reloadData()
     }
