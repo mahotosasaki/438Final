@@ -9,14 +9,15 @@
 import Foundation
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 import FirebaseFirestoreSwift
 import FirebaseStorage
 class HomepageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     @IBOutlet weak var workoutCollectionView: UICollectionView!
-    
+    var animating = false
     let db = Firestore.firestore()
-    
+    let spinner = UIActivityIndicatorView()
     //this is hardcoded, needs to be the actual following list which probably needs to be pulled from coredata
     var userFollowing: [String] = []
     var followingUsers: [User] = []
@@ -28,6 +29,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         workoutCollectionView.delegate = self
         workoutCollectionView.dataSource = self
         workoutCollectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,6 +38,11 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func setup(){
+        animating = true
+        spinner.center = self.view.center
+        spinner.hidesWhenStopped = true
+        view.addSubview(spinner)
+        spinner.startAnimating()
         userFollowing = []
         followingUsers = []
         posts = []
@@ -45,6 +52,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     func getFollowingIds(){
         DispatchQueue.global().async {
             do {
+                
                 let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
                 
                 results.getDocuments() { (querySnapshot, err) in
@@ -125,7 +133,8 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                     //updating table
                     DispatchQueue.main.async {
                         print("POSTS COUNT \(self.posts.count)")
-                        
+                        self.spinner.stopAnimating()
+                        self.animating = false
                         //creating an alert is not the greatest way of checking because one user can have 0 posts while the next can have >0 posts and the alert would trigger anyways
 //                        if self.posts.count == 0 {
 //                            let alert = UIAlertController(title: "Error", message: "No Results Found", preferredStyle: .alert)
@@ -194,7 +203,9 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
 //            detailVC.post = posts[indexPath.row]
 //            detailVC.postId = posts[indexPath.row].id
 //            navigationController?.pushViewController(detailVC, animated: true)
-             self.performSegue(withIdentifier: "fromHomeToPost", sender: posts[indexPath.row].id)
+            if (!animating){
+                self.performSegue(withIdentifier: "fromHomeToPost", sender: posts[indexPath.row].id)
+            }
         }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

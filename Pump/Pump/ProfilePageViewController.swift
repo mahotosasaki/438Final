@@ -15,8 +15,7 @@ import CoreData
 class ProfilePageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var userPosts = [Post]()
-    //we need to figure out how we want to keep track of the userlogged in. I have a hardcoded value for now
-    var currUser = "tester"
+    var userStructure: User?
     let db = Firestore.firestore()
     
     var posts: [Post] = []
@@ -49,30 +48,8 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         
         picker.delegate = self
         picker.allowsEditing = true
-        // Do any additional setup after loading the view.
         
-        
-        //creating a user Struct as an example
-//        var userStruct: User?
-//        let userRef = db.collection("users")
-//        let call = userRef.whereField("username", isEqualTo: currUser)
-//
-//        call.getDocuments() { (querySnapshot, err) in
-//        if let err = err {
-//            print("No results: \(err)")
-//
-//        } else {
-//
-//                for document in querySnapshot!.documents {
-//                    //sets our userstruct variable to what the document recieved from our call
-//                    try? userStruct = document.data(as: User.self)
-//                    //sending our userstruct to generatepagedetails function so it can alter the actually page with user info
-//                    self.generatePageDetails(userDetails: userStruct!)
-//                }
-//
-//            }
-//        }
-        
+        fetchUser()
 
         var array = [NSManagedObject]()
         array = CoreDataFunctions.getData()
@@ -109,6 +86,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     func setup(){
         posts = []
         fetchUserPosts()
+        
     }
     
     @IBAction func signOutUser(_ sender: UIBarButtonItem) {
@@ -169,17 +147,33 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     }
 
     @IBAction func editProfile(_ sender: UIButton) {
-       
-        self.performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
+        self.performSegue(withIdentifier: "toEditProfile", sender: userStructure)
     }
-    
-    
-    
-    
-    
     
 
     func fetchUserPosts() {
+        DispatchQueue.global().async {
+            do {
+                let userRef = self.db.collection("users")
+                let call = userRef.whereField("uid", isEqualTo: userID)
+                call.getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("No results: \(err)")
+                } else {
+                        for document in querySnapshot!.documents {
+                            try? self.userStructure = document.data(as: User.self)
+                        }
+                    }
+                
+                    DispatchQueue.main.async {
+            
+                    }
+                }
+            }
+        }
+    }
+    
+    func fetchUser () {
         DispatchQueue.global().async {
             do {
                 let postsRef = self.db.collection("posts")
@@ -202,6 +196,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
             }
         }
     }
+    
 }
 
 
@@ -265,6 +260,10 @@ extension ProfilePageViewController: UICollectionViewDataSource, UICollectionVie
             let detailedPostView = segue.destination as? DetailedPostViewController
             detailedPostView?.postId = sender as? String
             detailedPostView?.uniqueSegueIdentifier = "No Like Button"
+        }
+        if(segue.identifier == "toEditProfile") {
+            let editProf = segue.destination as? EditProfileViewController
+            editProf?.userStruc = sender as? User
         }
     }
 

@@ -454,7 +454,7 @@
                     <connections>
                         <outlet property="displayNameField" destination="Uht-Nh-VoF" id="o2e-qD-FTO"/>
                         <outlet property="emailField" destination="6Zq-EB-1C9" id="mV4-WF-4x8"/>
-                        <outlet property="errorLabel" destination="xZk-mf-e5E" id="5WI-ah-Pq6"/>
+                        <outlet property="errorLabel" destination="xZk-mf-e5E" id="JfH-xf-ek9"/>
                         <outlet property="experienceField" destination="i8u-7r-RrG" id="3kl-hF-yJS"/>
                         <outlet property="heightField" destination="ieH-UJ-ZDg" id="YHe-wF-Hph"/>
                         <outlet property="nameField" destination="7c2-ug-JXA" id="xrZ-hM-oS1"/>
@@ -505,7 +505,7 @@
         <!--Profile Page View Controller-->
         <scene sceneID="CSM-JX-7Yw">
             <objects>
-                <viewController id="9m4-rP-SK0" customClass="ProfilePageViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="9m4-rP-SK0" customClass="ProfilePageViewController" customModule="Pump" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tn9-ej-TZr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -532,7 +532,6 @@
                                 <state key="normal" title="Edit"/>
                                 <connections>
                                     <action selector="editProfile:" destination="9m4-rP-SK0" eventType="touchUpInside" id="U1i-Nz-O3b"/>
-                                    <segue destination="opk-Hz-RHo" kind="show" id="28T-Ah-heD"/>
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="ife-Oj-rqy">
@@ -586,11 +585,12 @@
                         <outlet property="profileName" destination="xaD-h5-t3c" id="o5z-MU-VQp"/>
                         <segue destination="Vfv-cW-ATp" kind="show" identifier="fromProfileToDetailedVC" id="8D6-Id-R4Z"/>
                         <segue destination="kyX-e5-8hT" kind="show" identifier="signOut" id="gLK-NC-Nji"/>
+                        <segue destination="opk-Hz-RHo" kind="show" identifier="toEditProfile" id="sv9-7i-hVY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0b-aj-aBX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1510" y="2132"/>
+            <point key="canvasLocation" x="1509.5999999999999" y="2131.7733990147785"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2Fl-Lq-OKf">

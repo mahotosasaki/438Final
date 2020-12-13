@@ -45,6 +45,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         profileImage.layer.borderWidth=1.0
         profileImage.layer.masksToBounds = false
