@@ -22,7 +22,6 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     var userFollowing: [String] = []
     var followingUsers: [User] = []
     var posts: [Post] = []
-    //
     
     override func viewDidLoad() {
         //setup()
@@ -63,14 +62,10 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                             var userInfo: User?
                             try? userInfo = document.data(as:User.self)
                             
-                            print(userInfo)
-                            
                             self.userFollowing = userInfo?.following ?? []
-//                            self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
                         }
                     }
                     DispatchQueue.main.async {
-                        print("GET USER IDS \(self.userFollowing.count)")
                         if(!self.userFollowing.isEmpty){
                             self.fetchFollowingUsersObj()
                         } else {
@@ -85,7 +80,6 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func fetchFollowingUsersObj() {
-        //print("user following \(userFollowing)")
         DispatchQueue.global().async {
             do {
                 let followingRef = self.db.collection("users")
@@ -105,7 +99,6 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                     }
                     //updating table
                     DispatchQueue.main.async {
-                        print("FOOLOWING USERS \(self.followingUsers.count)")
                         for user in self.followingUsers {
                             self.fetchPosts(user: user)
                         }
@@ -116,7 +109,6 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func fetchPosts(user:User) {
-        //print("list of users u follow \(user.username)")
         DispatchQueue.global().async {
             do {
                 let postsRef = self.db.collection("posts")
@@ -127,25 +119,15 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                         print("No results: \(err)")
                     } else {
                         for document in querySnapshot!.documents {
-                            // print(document.data().map(String.init(describing:)) ?? "nil")
                             var postInfo: Post?
                             try? postInfo = document.data(as:Post.self)
-                            //print(postInfo)
                             self.posts.append(postInfo ?? Post(id: "err", exercises: [], likes:0, title: "err", userId: "err", username: " ", picturePath: ""))
                         }
                     }
                     //updating table
                     DispatchQueue.main.async {
-                        print("POSTS COUNT \(self.posts.count)")
                         self.spinner.stopAnimating()
                         self.animating = false
-                        //creating an alert is not the greatest way of checking because one user can have 0 posts while the next can have >0 posts and the alert would trigger anyways
-//                        if self.posts.count == 0 {
-//                            let alert = UIAlertController(title: "Error", message: "No Results Found", preferredStyle: .alert)
-//                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-//                            self.present(alert, animated: true, completion: nil)
-//
-//                        }
                         self.workoutCollectionView.reloadData()
                     }
                 }
@@ -174,7 +156,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                 cell.imageView.image = image
             } else {
                 let ref = Storage.storage().reference(forURL: imageURL)
-
+                
                 ref.downloadURL {(url, error) in
                     if error != nil {
                         print("uh oh")
@@ -199,34 +181,21 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         cell.titleLabel.text = posts[indexPath.row].title
         cell.likesLabel.text = "\(posts[indexPath.row].likes) likes"
         cell.usernameLabel.text = posts[indexPath.row].username
-//        BORDER FOR POSTS?
-//        cell.layer.borderColor = UIColor.systemGray.cgColor
-//        cell.layer.cornerRadius = 5
-//        cell.layer.borderWidth = 1
         return cell
     }
     
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//            let detailVC = DetailedPostViewController()
-//            detailVC.post = posts[indexPath.row]
-//            detailVC.postId = posts[indexPath.row].id
-//            navigationController?.pushViewController(detailVC, animated: true)
-            if (!animating){
-                self.performSegue(withIdentifier: "fromHomeToPost", sender: posts[indexPath.row].id)
-            }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if (!animating){
+            self.performSegue(withIdentifier: "fromHomeToPost", sender: posts[indexPath.row].id)
         }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        if (segue.identifier == "toDetailedWorkout") {
-    //
-    //            let detailedPostView = segue.destination as? DetailedWorkoutController
-    //            detailedPostView?.postId = sender as! String
-    //        }
-            if(segue.identifier == "fromHomeToPost") {
-                let detailedPostView = segue.destination as? DetailedPostViewController
-                detailedPostView?.postId = sender as? String
-                detailedPostView?.uniqueSegueIdentifier = "Like Button"
-            }
+        
+        if(segue.identifier == "fromHomeToPost") {
+            let detailedPostView = segue.destination as? DetailedPostViewController
+            detailedPostView?.postId = sender as? String
         }
+    }
     
 }

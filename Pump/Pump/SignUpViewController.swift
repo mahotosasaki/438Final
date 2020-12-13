@@ -16,7 +16,7 @@ import CoreData
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-
+    
     @IBOutlet weak var profileImage: UIImageView!
     
     @IBOutlet weak var signUpButton: UIButton!
@@ -42,10 +42,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let imagePicker = UIImagePickerController()
     
     let pickerOptions = ["Beginner", "Intermediate", "Advanced"]
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         profileImage.layer.borderWidth=1.0
         profileImage.layer.masksToBounds = false
@@ -68,14 +68,14 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
-
+        
         let toolbar = UIToolbar()
         toolbar.barStyle = .default
         toolbar.isTranslucent = true
         toolbar.sizeToFit()
-
+        
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(selectDone))
-
+        
         toolbar.setItems([doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
         experienceField.inputAccessoryView = toolbar
@@ -94,11 +94,11 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
             self.openCamera()
         }))
-
+        
         alert.addAction(UIAlertAction(title: "Library", style: .default, handler: { _ in
             self.openLibrary()
         }))
-
+        
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -156,14 +156,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 self.present(alert, animated: true, completion: nil)
                 return
             }
-
+            
             let user = User(experience: self.experienceField.text ?? "Beginner", following: [uid], height: height ?? 0.0, name: self.nameField.text ?? "", profile_pic: self.profileImage.image?.pngData()?.base64EncodedString() ?? "", uid: uid, username: self.displayNameField.text ?? "", weight: weight ?? 0.0, email: self.emailField.text!)
             
             CoreDataFunctions.save(user)
             
             userID = uid
             USERNAME = user.username
-            print("SAVING SELF TO FOLLOWING")
         }
     }
     
@@ -205,14 +204,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 }
                 
             }
-//            if let tabViewController = self.storyboard?.instantiateViewController(identifier: "TabViewController") as? UITabBarController {
-//                self.present(tabViewController, animated: true, completion: nil)
-//            }
-//            var viewControllers = self.navigationController?.viewControllers
-//            viewControllers.remove(at: viewControllers.count - 1)
-//            self.navigationController?.setViewControllers(viewControllers, animated: true)
             self.performSegue(withIdentifier: "showTabBar", sender: self)
-        
         }
     }
     
@@ -229,7 +221,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     // EMAIL REGEX
     func checkEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-
+        
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: email)
     }
@@ -237,7 +229,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     // PASSWORD REGEX
     func checkPassword(_ password: String) -> Bool {
         let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$"
-
+        
         let passPred = NSPredicate(format:"SELF MATCHES %@", passwordRegex)
         return passPred.evaluate(with: password)
     }
@@ -246,9 +238,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     func checkDisplayName(_ displayName: String) -> Bool{
         
         let displayNameRegex = "^\\w{7,18}$"
-
+        
         let displayPred = NSPredicate(format:"SELF MATCHES %@", displayNameRegex)
-       
+        
         if !displayPred.evaluate(with: displayName){
             return false
         }
@@ -262,7 +254,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 flag = false
             }
         }
-            
+        
         return flag
     }
     
@@ -290,11 +282,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             }
         }
         else {
-            // UI warnings here
-//            let alert = UIAlertController(title: "Error", message: "One or more fields is blank. Please try again", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
-//            self.present(alert, animated: true, completion: nil)
-//            return
             errorLabel.text = "One or more required fields is blank"
         }
     }

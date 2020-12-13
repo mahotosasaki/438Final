@@ -57,13 +57,9 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         experienceField.text = userStruc?.experience
         if let height = userStruc?.height {
             heightField.text = "\(height)" as String
-        } else {
-            print("Missing height.")
         }
         if let weight = userStruc?.weight {
             weightField.text = "\(weight)" as String
-        } else {
-            print("Missing weight.")
         }
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
@@ -147,7 +143,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
                 }
                 
                 
-//                self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true)
+                //                self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true)
                 Auth.auth().currentUser?.updateEmail(to: emailField.text ?? "error email") { (error) in
                     // ...
                 }
@@ -217,21 +213,25 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     func sendToFirebase(_ uid:String) {
-           let height = Double(self.heightField.text ?? "0.0")
-           let weight = Double(self.weightField.text ?? "0.0")
-           let db = Firestore.firestore()
-           self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true) {(err) in
-
-               if err != nil{
-                   let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error.") Please try again", preferredStyle: .alert)
-                   alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
-                   self.present(alert, animated: true, completion: nil)
-                   return
-               }
-
-                self.db.collection("users").document(userID).setData(["email":  self.emailField.text ?? "", "name":self.nameField.text ?? "", "username": self.displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true)
-           }
-       }
+        let height = Double(self.heightField.text ?? "0.0")
+        let weight = Double(self.weightField.text ?? "0.0") ?? 0
+        
+        let email = self.emailField.text ?? ""
+        let name = self.nameField.text ?? ""
+        let username = self.displayNameField.text ?? ""
+        
+        let experience = self.experienceField.text ?? "Beginner"
+        
+        db.collection("users").document(userID).setData(["email":  email, "name":name, "username": username, "height": height ?? 0, "weight": weight, "experience": experience, "profile_pic": self.imageURL], merge: true) {(err) in
+            
+            if err != nil{
+                let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error.") Please try again", preferredStyle: .alert)
+                alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+        }
+    }
 }
 
 //Picture functionality

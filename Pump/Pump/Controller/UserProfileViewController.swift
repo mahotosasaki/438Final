@@ -35,15 +35,8 @@ class UserProfileViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
-        
-        print("USER PROFILE VIEW CONTROLLER")
-        
+                
         followButton.titleLabel?.adjustsFontSizeToFitWidth = true
-//        let buttomImage = UIImage(systemName: "heart")
-//        let button = UIButton(type: .custom)
-//        button.setBackgroundImage(buttomImage, for: .normal)
-//        button.setTitle("Like", for: .normal)
-//        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +62,6 @@ class UserProfileViewController: UIViewController {
             if let err = err {
                 print("No results: \(err)")
             } else {
-                print(querySnapshot!.documents)
                 for document in querySnapshot!.documents {
                     var userInfo: User?
                     try? userInfo = document.data(as:User.self)
@@ -116,14 +108,11 @@ class UserProfileViewController: UIViewController {
                         for document in querySnapshot!.documents{
                             var userInfo: User?
                             try? userInfo = document.data(as:User.self)
-                            
-                            //print(userInfo)
-                            
+                                                        
                             self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
                         }
                     }
                     DispatchQueue.main.async {
-                        print("GET USER IDS \(self.userFollowing.count)")
                         if self.userFollowing.contains(self.userProfile.uid) {
                             self.followButton.layer.backgroundColor = UIColor.systemGray.cgColor
                             self.followButton.titleLabel?.text = "Following"
@@ -152,18 +141,15 @@ class UserProfileViewController: UIViewController {
                     }
                     DispatchQueue.main.async {
                         if self.userFollowing.contains(self.userProfile.uid) {
-                            print("unfollow")
                             self.db.collection("users").document(userID).updateData(["following": FieldValue.arrayRemove([self.userProfile.uid])])
                             self.followButton.layer.backgroundColor = UIColor.systemTeal.cgColor
                             self.followButton.titleLabel?.text = "Follow"
                         }
                         else {
-                            print("follow")
                             self.userFollowing.append(self.userProfile.uid)
                             self.db.collection("users").document(userID).setData([ "following": self.userFollowing], merge: true)
                             self.followButton.layer.backgroundColor = UIColor.systemGray.cgColor
                             self.followButton.titleLabel?.text = "Following"
-                            print ("USER FOLLOWING \(self.userFollowing.count)")
                         }
                     }
                 }
@@ -191,7 +177,6 @@ class UserProfileViewController: UIViewController {
                     
                     
                     DispatchQueue.main.async {
-                        print("POST COUNT \(self.profilePosts.count)")
                         self.collectionView.reloadData()
                     }
                 }
@@ -260,7 +245,6 @@ extension UserProfileViewController: UICollectionViewDataSource, UICollectionVie
         if(segue.identifier == "searchToDetailedVC") {
             let detailedPostView = segue.destination as? DetailedPostViewController
             detailedPostView?.postId = sender as? String
-            detailedPostView?.uniqueSegueIdentifier = "No Like Button"
         }
     }
 }

@@ -24,9 +24,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
     let numExerciseComponents = 4 //Exercise struct has 4 fields
     let extraComponents = 1 //includes title and numlikes in tableview
     var fontSize:CGFloat = 14
-    
-    var uniqueSegueIdentifier:String!
-    
+        
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var likeButton: UIButton!
@@ -70,14 +68,11 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
                     if let err = err {
                         print("No results: \(err)")
                     } else {
-                        //print (try? querySnapshot?.data(as:Post.self))
                         try? self.post = querySnapshot?.data(as:Post.self)
                         //updating table
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                             if let posts = self.post {
-//                                print(posts)
-//                                print(posts.exercises.count)
                                 self.navigationItem.title = posts.username
                                 self.numExercises = posts.exercises.count
                                 self.tableView.reloadData()
@@ -152,7 +147,6 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
             print("like failed")
             return
         }
-        print("like")
         let noti = Notification(postId: postId, postTitle: p.title, receiverId: p.userId, senderId: userID)
         let _ = try? db.collection("notifications").addDocument(from: noti)
         self.db.collection("posts").document(postId).setData([ "likes": (p.likes+1)], merge: true)
@@ -166,7 +160,6 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
             print("like failed")
             return
         }
-        print("dislike")
         self.likeButton.titleLabel?.text = "Like"
         self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         self.db.collection("notifications").document(notificationID).delete()

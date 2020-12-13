@@ -29,15 +29,9 @@ class NotificationsViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //        if (segue.identifier == "toDetailedWorkout") {
-        //
-        //            let detailedPostView = segue.destination as? DetailedWorkoutController
-        //            detailedPostView?.postId = sender as! String
-        //        }
         if(segue.identifier == "toDetailedWorkoutViewController") {
             let detailedPostView = segue.destination as? DetailedPostViewController
             detailedPostView?.postId = sender as? String
-            detailedPostView?.uniqueSegueIdentifier = "No Like Button"
         }
     }
     
@@ -54,7 +48,6 @@ class NotificationsViewController: UIViewController {
                         for document in querySnapshot!.documents {
                             try? notiStruct = document.data(as:Notification.self)
                             self.notifications.append(notiStruct ?? Notification(postId: "err", postTitle: "err", receiverId: "err", senderId: "err"))
-                            //print (notiStruct ?? "unknown error")
                         }
                     }
                     DispatchQueue.main.async {

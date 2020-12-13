@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //only run this if your device is not synced up with firebase
         //CoreDataFunctions.deleteAllData()
         // Do any additional setup after loading the view.
     }

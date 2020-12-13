@@ -405,8 +405,8 @@
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p20-L8-RkU">
-                                <rect key="frame" x="341" y="432" width="26" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p20-L8-RkU">
+                                <rect key="frame" x="341" y="434" width="26" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -417,8 +417,8 @@
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7e-GR-veI">
-                                <rect key="frame" x="341" y="380" width="26" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7e-GR-veI">
+                                <rect key="frame" x="341" y="387" width="26" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -427,16 +427,17 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="dOq-BB-GFo" firstAttribute="leading" secondItem="Sn8-kG-zja" secondAttribute="leading" constant="37" id="1wr-vu-auJ"/>
+                            <constraint firstItem="EUH-eT-hip" firstAttribute="top" secondItem="h8i-86-sTb" secondAttribute="bottom" constant="30" id="2TN-3D-UCo"/>
                             <constraint firstItem="Sn8-kG-zja" firstAttribute="trailing" secondItem="P7e-GR-veI" secondAttribute="trailing" constant="8" id="6Jc-rt-1ds"/>
                             <constraint firstAttribute="bottom" secondItem="h8i-86-sTb" secondAttribute="bottom" constant="509" id="7XM-uU-qh8"/>
                             <constraint firstItem="P7e-GR-veI" firstAttribute="trailing" secondItem="p20-L8-RkU" secondAttribute="trailing" id="9Vl-zB-pUf"/>
                             <constraint firstItem="EUH-eT-hip" firstAttribute="top" secondItem="dOq-BB-GFo" secondAttribute="top" id="Bny-5L-kRd"/>
-                            <constraint firstItem="p20-L8-RkU" firstAttribute="top" secondItem="P7e-GR-veI" secondAttribute="bottom" constant="35" id="Bze-fD-wDf"/>
+                            <constraint firstItem="p20-L8-RkU" firstAttribute="top" secondItem="P7e-GR-veI" secondAttribute="bottom" constant="23" id="Bze-fD-wDf"/>
                             <constraint firstItem="eIo-Fg-pKJ" firstAttribute="leading" secondItem="p20-L8-RkU" secondAttribute="leading" id="DP7-dp-iMC"/>
                             <constraint firstItem="Sn8-kG-zja" firstAttribute="bottom" secondItem="dOq-BB-GFo" secondAttribute="bottom" constant="85" id="DdE-Ct-Uc4"/>
                             <constraint firstItem="xZk-mf-e5E" firstAttribute="trailing" secondItem="3l0-la-HvM" secondAttribute="trailing" id="Fbn-yQ-EGe"/>
                             <constraint firstItem="3l0-la-HvM" firstAttribute="top" secondItem="dOq-BB-GFo" secondAttribute="bottom" constant="35" id="Hqy-OH-gI3"/>
-                            <constraint firstItem="P7e-GR-veI" firstAttribute="top" secondItem="EUH-eT-hip" secondAttribute="bottom" constant="35" id="Lkz-li-xS7"/>
+                            <constraint firstItem="P7e-GR-veI" firstAttribute="top" secondItem="EUH-eT-hip" secondAttribute="bottom" constant="30" id="Lkz-li-xS7"/>
                             <constraint firstItem="eIo-Fg-pKJ" firstAttribute="trailing" secondItem="p20-L8-RkU" secondAttribute="trailing" id="Lqh-YZ-Jga"/>
                             <constraint firstItem="dOq-BB-GFo" firstAttribute="top" secondItem="Sn8-kG-zja" secondAttribute="top" constant="245" id="Onv-9v-THq"/>
                             <constraint firstItem="3l0-la-HvM" firstAttribute="leading" secondItem="Sn8-kG-zja" secondAttribute="leading" constant="37" id="Sos-31-agp"/>
@@ -744,10 +745,18 @@
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YOl-Kq-C75">
                                 <rect key="frame" x="20" y="649" width="335" height="50"/>
+                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="x5H-2f-haZ"/>
                                 </constraints>
-                                <state key="normal" title="Post"/>
+                                <state key="normal" title="Post">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="postButtonPressed:" destination="BPP-YS-hD4" eventType="touchUpInside" id="czU-b4-Ykk"/>
                                 </connections>
@@ -1252,7 +1261,7 @@
                         <viewLayoutGuide key="safeArea" id="e0Z-wO-zPc"/>
                     </view>
                     <navigationItem key="navigationItem" id="yof-vC-XDY">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="uDL-l2-RS9">
+                        <barButtonItem key="rightBarButtonItem" id="uDL-l2-RS9">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wZR-2K-VHU">
                                 <rect key="frame" x="283.33333333333331" y="11" width="75.666666666666686" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

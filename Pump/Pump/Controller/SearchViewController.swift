@@ -35,7 +35,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print (listOfProfiles.count)
         theRow = indexPath.row
         self.performSegue(withIdentifier: "toUserProfileViewController", sender: listOfProfiles[indexPath.row])
     }
@@ -50,12 +49,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func searchUsers(_ sender: UITextField) {
         let db = Firestore.firestore()
-        //let search:String = sender.text ?? ""
-        
+
         guard let search:String = sender.text else {
             return
         }
-        //print ("results: " + search)
+
         self.listOfProfiles.removeAll()
         
         if (search == ""){
@@ -72,8 +70,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                         } else {
                             self.listOfProfiles.removeAll()
                             for document in querySnapshot!.documents {
-                                //print(" for result of \(search) :  \(document.documentID) => \(document.data())")
-                                
                                 //adding the username to the array if it starts with our search word
                                 let res = document.data()["username"] as! String
                                 if res.hasPrefix(search) {

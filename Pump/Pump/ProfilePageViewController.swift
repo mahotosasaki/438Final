@@ -76,21 +76,13 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
                 }
                 
             }
-            //            let user = array.last
-            //            if let base64image = user?.value(forKey: "profile_pic") as? String {
-            //                let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
-            //                self.profileImage.image = UIImage(data: data)
-            //            }
-            //            self.profileName.text = user?.value(forKey: "name") as? String ?? "name"
         }
     }
     
     @IBAction func signOutUser(_ sender: UIBarButtonItem) {
-        print("sign out")
         let firebaseAuth = Auth.auth()
         do {
             try? firebaseAuth.signOut()
-            print("Sucessfully signed out")
         }
         self.performSegue(withIdentifier: "signOut", sender: nil)
         
@@ -100,18 +92,12 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     //need to finish filling in once we figure out how to upload and recieve profile pictures
     func generatePageDetails(userDetails: User) {
         profileName.text = userDetails.name
-        
-        /*if we were to also show all the posts of the user on the profile page. not finished 
-         var user = "someguysid"
-         //need to get that persons id maybe
-         let postRefs = db.collection("posts")
-         userPosts = postRefs.whereField("userid", isEqualTo: currUser)
-         */
     }
     
     @IBAction func editProfile(_ sender: UIButton) {
-        print(userStructure)
-        self.performSegue(withIdentifier: "toEditProfile", sender: userStructure)
+        if let user = userStructure {
+            self.performSegue(withIdentifier: "toEditProfile", sender: user)
+        }
     }
     
     
@@ -153,7 +139,6 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
                         }
                     }
                     DispatchQueue.main.async {
-                        print("POST COUNT \(self.posts.count)")
                         self.collectionView.reloadData()
                     }
                 }
@@ -223,7 +208,6 @@ extension ProfilePageViewController: UICollectionViewDataSource, UICollectionVie
         if(segue.identifier == "fromProfileToDetailedVC") {
             let detailedPostView = segue.destination as? DetailedPostViewController
             detailedPostView?.postId = sender as? String
-            detailedPostView?.uniqueSegueIdentifier = "No Like Button"
         }
         if(segue.identifier == "toEditProfile") {
             let editProf = segue.destination as? EditProfileViewController

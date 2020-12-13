@@ -20,7 +20,6 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
     @IBOutlet weak var imageView: UIImageView!
     let imagePicker = UIImagePickerController()
     var picturePath = ""
-    var exerciseArray:[Exercise] = []
     var workout = Workout(userID: userID, title: "", likes: "0", picturePath: "", exercises: [])
     
     @IBOutlet weak var tableView: UITableView!
@@ -118,8 +117,6 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         
         let uniqueId = db.collection("post").document().documentID;
         var myPost = Post(id: uniqueId, exercises: exerciseDict, likes: 0, title: tableData[0], userId: userID, username: USERNAME, picturePath: "")
-        //printing struct to see layout for debugging purposes
-        //print (myPost)
         //adding our post struct to database
         if let image = self.imageView.image {
             let fileRef = ref.child("postImages\(userID + myPost.title).jpg")
@@ -151,6 +148,9 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         do {
             let _ = try db.collection("posts").document(post.id).setData(from: post)
             numTableViewSections = 6
+            tableData = ["", "", "", "1" ,"1"]
+            imageView.image = UIImage()
+            
             tableView.reloadData()
             let alert = UIAlertController(title: "Success", message: "Post created successfully", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -274,7 +274,6 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
                 exerciseCell.deleteButton.isHidden = false
             }
             
-            //tableData[indexPath.section] = exerciseCell.exerciseLabel.text ?? ""
             tableData[indexPath.section] = "\(indexPath.section / numExerciseComponents)"
             return exerciseCell
         } else if indexPath.section % numExerciseComponents == 2 {
@@ -287,7 +286,6 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
         } else if indexPath.section % numExerciseComponents == 3 {
             cell.label?.text = "Sets"
             cell.rightLabel.text = tableData[indexPath.section]
-            //tableData[indexPath.section] = cell.label.text ?? ""
         }
         return cell
     }
@@ -403,8 +401,6 @@ extension CreateWorkoutViewController: UIPickerViewDataSource, UIPickerViewDeleg
             }
             pickerViewHistory[newIndex] = value
         }
-        print("UPDATE")
-        print(pickerViewHistory)
     }
 }
 
