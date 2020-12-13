@@ -195,6 +195,10 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         cell.titleLabel.text = posts[indexPath.row].title
         cell.likesLabel.text = "\(posts[indexPath.row].likes) likes"
         cell.usernameLabel.text = posts[indexPath.row].username
+//        BORDER FOR POSTS?
+//        cell.layer.borderColor = UIColor.systemGray.cgColor
+//        cell.layer.cornerRadius = 5
+//        cell.layer.borderWidth = 1
         return cell
     }
     
