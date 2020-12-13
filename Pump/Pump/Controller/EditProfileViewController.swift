@@ -7,60 +7,32 @@
 //
 
 
-import Foundation
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
+import CoreData
 
-class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     var userStruc: User?
     let db = Firestore.firestore()
     
     @IBOutlet weak var profileImage: UIImageView!
-    
     @IBOutlet weak var emailField: UITextField!
-    
     @IBOutlet weak var passwordField: UITextField!
-    
     @IBOutlet weak var nameField: UITextField!
-    
     @IBOutlet weak var displayNameField: UITextField!
-    
     @IBOutlet weak var heightField: UITextField!
-    
     @IBOutlet weak var weightField: UITextField!
-    
-    
     @IBOutlet weak var experienceField: UITextField!
     let pickerOptions = ["Beginner", "Intermediate", "Advanced"]
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerOptions.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerOptions[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        experienceField.text = pickerOptions[row]
-    }
-    
-    @objc func selectDone() {
-        if (!pickerOptions.contains(experienceField.text ?? "")) {
-            experienceField.text = pickerOptions[0]
-        }
-        experienceField.resignFirstResponder()
-    }
-    
     @IBOutlet weak var saveButton: UIButton!
-    
     @IBOutlet weak var errorLabel: UILabel!
+    
+    let picker = UIImagePickerController()
+    var imageURL = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,22 +66,88 @@ class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPicke
             print("Missing weight.")
         }
         
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        profileImage.layer.borderWidth=1.0
+        profileImage.layer.masksToBounds = false
+        profileImage.layer.borderColor = UIColor.black.cgColor
+        profileImage.layer.cornerRadius = profileImage.frame.size.height/2
+        profileImage.clipsToBounds = true
+        profileImage.isUserInteractionEnabled = true
+        profileImage.addGestureRecognizer(tapGestureRecognizer)
         
+        picker.delegate = self
+        picker.allowsEditing = true
         
+        var array = [NSManagedObject]()
+        array = CoreDataFunctions.getData()
+        if array.count > 0{
+            for i in 0..<array.count {
+                if(array[i].value(forKey: "uid") as? String ?? "uid" == userID){
+                    if let base64image = array[i].value(forKey: "profile_pic") as? String {
+                        let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
+                        self.profileImage.image = UIImage(data: data)
+                    }
+                }
+                
+            }
+        }
         //experienceField
         // Do any additional setup after loading the view.
     }
     
+    @objc func selectDone() {
+        if (!pickerOptions.contains(experienceField.text ?? "")) {
+            experienceField.text = pickerOptions[0]
+        }
+        experienceField.resignFirstResponder()
+    }
+    
     @IBAction func saveData(_ sender: Any) {
-        
-        
         let height = Double(heightField.text ?? "0.0")
         let weight = Double(weightField.text ?? "0.0")
         
         if checkFields(){
             if validateSignUp() {
                 errorLabel.text = nil
-                self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner"], merge: true)
+                
+                
+                self.userStruc?.height = height
+                self.userStruc?.weight = weight
+                self.userStruc?.email = emailField.text ?? ""
+                self.userStruc?.name = nameField.text ?? ""
+                self.userStruc?.username = displayNameField.text ?? ""
+                self.userStruc?.experience = experienceField.text ?? ""
+                self.userStruc?.profile_pic = self.profileImage.image?.pngData()?.base64EncodedString() ?? ""
+                if let user = userStruc {
+                    CoreDataFunctions.save(user)
+                }
+                
+                if let image = self.profileImage.image {
+                    let ref = Storage.storage().reference().child("userImages\(userID).jpg")
+                    ref.putData(image.pngData()!, metadata: nil) { (metadata, error) in
+                        if error != nil {
+                            print("error saving image")
+                        }
+                        else {
+                            ref.downloadURL { (url, error2) in
+                                if error2 != nil {
+                                    print("error grabbing image url")
+                                }
+                                else {
+                                    guard let downloadURL = url else {return}
+                                    self.imageURL = downloadURL.absoluteString
+                                    self.sendToFirebase(userID)
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    self.sendToFirebase(userID)
+                }
+                
+                
+//                self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true)
                 Auth.auth().currentUser?.updateEmail(to: emailField.text ?? "error email") { (error) in
                     // ...
                 }
@@ -148,7 +186,6 @@ class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     func checkEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: email)
     }
@@ -156,26 +193,20 @@ class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPicke
     // PASSWORD REGEX
     func checkPassword(_ password: String) -> Bool {
         let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$"
-        
         let passPred = NSPredicate(format:"SELF MATCHES %@", passwordRegex)
         return passPred.evaluate(with: password)
     }
     
     // DISPLAY NAME REGEX AND UNIQUENESS
     func checkDisplayName(_ displayName: String) -> Bool{
-        
         let displayNameRegex = "^\\w{7,18}$"
-        
         let displayPred = NSPredicate(format:"SELF MATCHES %@", displayNameRegex)
-        
         if !displayPred.evaluate(with: displayName){
             return false
         }
         
         var flag = true
-        
         let db = Firestore.firestore()
-        
         db.collection("users").whereField("username", isEqualTo: displayNameField.text!).getDocuments { (res, err) in
             if(res?.count != 0 && self.displayNameField.text != self.userStruc?.username){
                 flag = false
@@ -185,4 +216,79 @@ class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPicke
         return flag
     }
     
+    func sendToFirebase(_ uid:String) {
+           let height = Double(self.heightField.text ?? "0.0")
+           let weight = Double(self.weightField.text ?? "0.0")
+           let db = Firestore.firestore()
+           self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true) {(err) in
+
+               if err != nil{
+                   let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error.") Please try again", preferredStyle: .alert)
+                   alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+                   self.present(alert, animated: true, completion: nil)
+                   return
+               }
+
+                self.db.collection("users").document(userID).setData(["email":  self.emailField.text ?? "", "name":self.nameField.text ?? "", "username": self.displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true)
+           }
+       }
+}
+
+//Picture functionality
+extension EditProfileViewController {
+    // https://stackoverflow.com/questions/41717115/how-to-make-uiimagepickercontroller-for-camera-and-photo-library-at-the-same-tim
+    @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        let alert = UIAlertController(title: "Choose Image", message: "Choose an image from your camera roll or take a picture", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.openCamera()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Library", style: .default, handler: { _ in
+            self.openLibrary()
+        }))
+        
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func openCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            picker.sourceType = .camera
+            present(picker, animated: true, completion: nil)
+        }
+        else {
+            let alert = UIAlertController(title: "Camera Unavailable", message: "The camera cannot be accessed on this device", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func openLibrary() {
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let image = info[.editedImage] as? UIImage else {return}
+        profileImage.image = image
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+extension EditProfileViewController:  UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerOptions.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerOptions[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        experienceField.text = pickerOptions[row]
+    }
 }
