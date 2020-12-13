@@ -16,8 +16,6 @@ import FirebaseStorage
 
 class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    
-    
     var userStruc: User?
     let db = Firestore.firestore()
     

@@ -63,7 +63,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     
     func setup(){
         posts = []
-        //fetchUserPosts()
+        fetchUserPosts()
         fetchUser()
         var array = [NSManagedObject]()
         array = CoreDataFunctions.getData()
@@ -151,6 +151,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     @IBAction func editProfile(_ sender: UIButton) {
+        print(userStructure)
         self.performSegue(withIdentifier: "toEditProfile", sender: userStructure)
     }
     

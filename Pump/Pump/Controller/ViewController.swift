@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseFirestore
+import CoreData
 
 var userID:String = ""
 var USERNAME: String = " "
@@ -19,7 +20,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //CoreDataFunctions.deleteAllData()
         // Do any additional setup after loading the view.
     }
     
