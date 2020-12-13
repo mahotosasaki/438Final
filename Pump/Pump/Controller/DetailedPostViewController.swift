@@ -11,6 +11,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class DetailedPostViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -27,8 +28,9 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
     var uniqueSegueIdentifier:String!
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var likeButton: UIBarButtonItem!
     
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -36,17 +38,28 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         tableView.dataSource = self
         tableView.delegate = self
         fetchPost()
-        
-        if uniqueSegueIdentifier == "No Like Button" {
-            print("No like button")
-            likeButton = UIBarButtonItem(title: "", style:         UIBarButtonItem.Style.plain, target: nil, action: nil)
-
-        } else {
-            print("LIKE BUTTON EXISTS")
-        }
     }
     
-    
+    func checkLike() {
+        db.collection("notifications").whereField("postId", isEqualTo: postId ?? "").whereField("senderId", isEqualTo: userID).getDocuments { (querySnapshot, err) in
+             if let err = err {
+                 print(err)
+                 self.likeButton.titleLabel?.text = "Like"
+                 self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+             }
+             else {
+                 if querySnapshot!.documents.count == 0 {
+                     self.likeButton.titleLabel?.text = "Like"
+                     self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                 }
+                 else {
+                     self.likeButton.titleLabel?.text = "Liked"
+                     self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                 }
+
+             }
+         }
+    }
     
     func fetchPost(){
         DispatchQueue.global().async {
@@ -65,8 +78,11 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
                             if let posts = self.post {
 //                                print(posts)
 //                                print(posts.exercises.count)
+                                self.navigationItem.title = posts.username
                                 self.numExercises = posts.exercises.count
                                 self.tableView.reloadData()
+                                self.checkLike()
+                                self.fetchImage()
                             }
                         }
                     }
@@ -75,8 +91,60 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    func fetchImage() {
+        if let imageURL = post?.picturePath {
+            if imageURL == "" {
+                let rect = imageView.bounds
+                UIGraphicsBeginImageContextWithOptions(CGSize(width: imageView.bounds.width, height: imageView.bounds.height), true, 1.0)
+                UIColor.gray.set()
+                UIRectFill(rect)
+                let image = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                self.imageView.image = image
+            }
+            else {
+                let ref = Storage.storage().reference(forURL: imageURL)
+
+                ref.downloadURL {(url, error) in
+                    if error != nil {
+                        print("uh oh")
+                    }
+                    else {
+                        let data = try? Data(contentsOf: url!)
+                        let image = UIImage(data: data! as Data)
+                        self.imageView.image = image
+                    }
+                }
+            }
+        }
+        else {
+            let rect = imageView.bounds
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: imageView.bounds.width, height: imageView.bounds.height), true, 1.0)
+            UIColor.gray.set()
+            UIRectFill(rect)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            self.imageView.image = image
+        }
+    }
+    
     @IBAction func likeButtonPressed(_ sender: Any) {
-        likePost()
+        db.collection("notifications").whereField("postId", isEqualTo: postId ?? "").whereField("senderId", isEqualTo: userID).getDocuments { (querySnapshot, err) in
+            if let err = err {
+                print(err)
+                self.likePost()
+            }
+            else {
+                if querySnapshot!.documents.count == 0 {
+                    self.likePost()
+                }
+                else {
+                    let notiID = querySnapshot!.documents[0].documentID
+                    self.dislikePost(notiID)
+                }
+
+            }
+        }
     }
     
     func likePost() {
@@ -84,9 +152,25 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
             print("like failed")
             return
         }
+        print("like")
         let noti = Notification(postId: postId, postTitle: p.title, receiverId: p.userId, senderId: userID)
-        let notiRef = try? db.collection("notifications").addDocument(from: noti)
+        let _ = try? db.collection("notifications").addDocument(from: noti)
         self.db.collection("posts").document(postId).setData([ "likes": (p.likes+1)], merge: true)
+        self.likeButton.titleLabel?.text = "Liked"
+        self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        
+    }
+    
+    func dislikePost(_ notificationID: String) {
+        guard let p = post else {
+            print("like failed")
+            return
+        }
+        print("dislike")
+        self.likeButton.titleLabel?.text = "Like"
+        self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        self.db.collection("notifications").document(notificationID).delete()
+        self.db.collection("posts").document(postId).setData([ "likes": (p.likes-1)], merge: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

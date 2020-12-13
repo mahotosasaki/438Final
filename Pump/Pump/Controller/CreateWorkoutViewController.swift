@@ -150,8 +150,18 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
     func addPost(_ post: Post) {
         do {
             let _ = try db.collection("posts").document(post.id).setData(from: post)
+            numTableViewSections = 6
+            tableView.reloadData()
+            let alert = UIAlertController(title: "Success", message: "Post created successfully", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
-        catch {print(error)}
+        catch {
+            print(error)
+            let alert = UIAlertController(title: "Error", message: "The post could not be created. Please try again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     

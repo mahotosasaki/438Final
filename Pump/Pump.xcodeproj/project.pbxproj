@@ -32,7 +32,7 @@
 		87354AB6256F3A2700030386 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87354AB5256F3A2700030386 /* SignUpViewController.swift */; };
 		87587EE12583FBF200563FD7 /* HomePageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87587EE02583FBF200563FD7 /* HomePageCollectionViewCell.swift */; };
 		8758D7B425776CE100564491 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8758D7B325776CE100564491 /* CoreDataFunctions.swift */; };
-		87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D55D3425808E15001422BB /* DetailedWorkoutController.swift */; };
+		879E13BE2585955E00267876 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879E13BD2585955E00267876 /* EditProfileViewController.swift */; };
 		D61C780325846987008CF1FF /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61C780225846987008CF1FF /* PostCell.swift */; };
 		D6A59CCD2568641700B9603C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D6A59CCC2568641700B9603C /* GoogleService-Info.plist */; };
 		D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CF7F72257E8F4D00ACA588 /* SignInViewController.swift */; };
@@ -67,7 +67,7 @@
 		87354AB5256F3A2700030386 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = Pump/SignUpViewController.swift; sourceTree = SOURCE_ROOT; };
 		87587EE02583FBF200563FD7 /* HomePageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCollectionViewCell.swift; sourceTree = "<group>"; };
 		8758D7B325776CE100564491 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
-		87D55D3425808E15001422BB /* DetailedWorkoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedWorkoutController.swift; sourceTree = "<group>"; };
+		879E13BD2585955E00267876 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		90631284BF15E4E2CD733A74 /* Pods-Pump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pump.debug.xcconfig"; path = "Target Support Files/Pods-Pump/Pods-Pump.debug.xcconfig"; sourceTree = "<group>"; };
 		D61C780225846987008CF1FF /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		D6A59CCC2568641700B9603C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -164,10 +164,10 @@
 				66A9F9E925636CFC00A03760 /* CreateWorkoutViewController.swift */,
 				5CACF45C2575C5370022A7D7 /* SearchViewController.swift */,
 				5CACF45E2575F20E0022A7D7 /* NotificationsViewController.swift */,
-				87D55D3425808E15001422BB /* DetailedWorkoutController.swift */,
 				5C584E4B2582CC9F00D78AF3 /* DetailedPostViewController.swift */,
 				5C584E4F2582FAF600D78AF3 /* HomepageViewController.swift */,
 				5CD7997B25841F3D00B408AF /* UserProfileViewController.swift */,
+				879E13BD2585955E00267876 /* EditProfileViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -298,7 +298,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C0846A32576D06F007F3E01 /* User.swift in Sources */,
-				87D55D3525808E15001422BB /* DetailedWorkoutController.swift in Sources */,
 				66A5B15025623B3600732C1C /* ViewController.swift in Sources */,
 				5CACF45D2575C5370022A7D7 /* SearchViewController.swift in Sources */,
 				5CD7997C25841F3D00B408AF /* UserProfileViewController.swift in Sources */,
@@ -306,6 +305,7 @@
 				669B59972581F95F007AB9CD /* LabelTableViewCell.swift in Sources */,
 				5CACF45F2575F20E0022A7D7 /* NotificationsViewController.swift in Sources */,
 				5C0846A52576D07A007F3E01 /* Post.swift in Sources */,
+				879E13BE2585955E00267876 /* EditProfileViewController.swift in Sources */,
 				66778AEE2565C82300655344 /* LabelCellTableViewCell.swift in Sources */,
 				5C584E4C2582CC9F00D78AF3 /* DetailedPostViewController.swift in Sources */,
 				D6CF7F73257E8F4D00ACA588 /* SignInViewController.swift in Sources */,

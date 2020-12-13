@@ -19,6 +19,8 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
+    @IBOutlet weak var followButton: UIButton!
+    
     var userProfile: User!
     var profilePosts: [Post] = []
     var userFollowing: [String] = []
@@ -34,11 +36,18 @@ class UserProfileViewController: UIViewController {
         
         print("USER PROFILE VIEW CONTROLLER")
         getProfileImage()
+        getFollowingIds()
+        followButton.titleLabel?.adjustsFontSizeToFitWidth = true
+//        let buttomImage = UIImage(systemName: "heart")
+//        let button = UIButton(type: .custom)
+//        button.setBackgroundImage(buttomImage, for: .normal)
+//        button.setTitle("Like", for: .normal)
+//        
     }
     
     func getProfileImage(){
         let data = db.collection("users")
-        let results = data.whereField("uid", isEqualTo: self.userProfile?.uid)
+        let results = data.whereField("uid", isEqualTo: self.userProfile?.uid ?? "")
         
         results.getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -79,6 +88,37 @@ class UserProfileViewController: UIViewController {
         }
     }
     
+    func getFollowingIds(){
+        DispatchQueue.global().async {
+            do {
+                let results = self.db.collection("users").whereField("uid", isEqualTo: userID)
+                
+                results.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("No results: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents{
+                            var userInfo: User?
+                            try? userInfo = document.data(as:User.self)
+                            
+                            //print(userInfo)
+                            
+                            self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        print("GET USER IDS \(self.userFollowing.count)")
+                        if self.userFollowing.contains(self.userProfile.uid) {
+                            self.followButton.layer.backgroundColor = UIColor.systemGray.cgColor
+                            self.followButton.titleLabel?.text = "Following"
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
     
     @IBAction func followUser(_ sender: UIButton) {
         DispatchQueue.global().async {
@@ -95,10 +135,18 @@ class UserProfileViewController: UIViewController {
                         }
                     }
                     DispatchQueue.main.async {
-                        if self.userFollowing.contains(self.userProfile.uid) {}
+                        if self.userFollowing.contains(self.userProfile.uid) {
+                            print("unfollow")
+                            self.db.collection("users").document(userID).updateData(["following": FieldValue.arrayRemove([self.userProfile.uid])])
+                            self.followButton.layer.backgroundColor = UIColor.systemTeal.cgColor
+                            self.followButton.titleLabel?.text = "Follow"
+                        }
                         else {
+                            print("follow")
                             self.userFollowing.append(self.userProfile.uid)
                             self.db.collection("users").document(userID).setData([ "following": self.userFollowing], merge: true)
+                            self.followButton.layer.backgroundColor = UIColor.systemGray.cgColor
+                            self.followButton.titleLabel?.text = "Following"
                             print ("USER FOLLOWING \(self.userFollowing.count)")
                         }
                     }
@@ -112,7 +160,7 @@ class UserProfileViewController: UIViewController {
             do {
                 let postsRef = self.db.collection("posts")
                 
-                let results = postsRef.whereField("userId", isEqualTo: self.userProfile?.uid)
+                let results = postsRef.whereField("userId", isEqualTo: self.userProfile?.uid ?? "")
                 
                 results.getDocuments() { (querySnapshot, err) in
                     if let err = err {
