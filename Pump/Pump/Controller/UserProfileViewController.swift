@@ -20,6 +20,9 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet weak var followButton: UIButton!
+    @IBOutlet weak var heightLabel: UILabel!
+    @IBOutlet weak var weightLabel: UILabel!
+    @IBOutlet weak var experienceLabel: UILabel!
     
     var userProfile: User!
     var profilePosts: [Post] = []
@@ -29,20 +32,33 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         self.usernameLabel.text = userProfile.username
         // Do any additional setup after loading the view.
-        fetchUserPosts()
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
         
         print("USER PROFILE VIEW CONTROLLER")
-        getProfileImage()
-        getFollowingIds()
+        
         followButton.titleLabel?.adjustsFontSizeToFitWidth = true
 //        let buttomImage = UIImage(systemName: "heart")
 //        let button = UIButton(type: .custom)
 //        button.setBackgroundImage(buttomImage, for: .normal)
 //        button.setTitle("Like", for: .normal)
 //        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        profilePosts = []
+        userFollowing = []
+        setup()
+        heightLabel.text = "\(userProfile.height ?? 0) ft"
+        weightLabel.text = "\(userProfile.weight ?? 0) lbs"
+        experienceLabel.text = "\(userProfile.experience ?? "")"
+    }
+    
+    func setup(){
+        fetchUserPosts()
+        getProfileImage()
+        getFollowingIds()
     }
     
     func getProfileImage(){

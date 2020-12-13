@@ -32,7 +32,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
     }
@@ -72,6 +72,9 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                         print("GET USER IDS \(self.userFollowing.count)")
                         if(!self.userFollowing.isEmpty){
                             self.fetchFollowingUsersObj()
+                        } else {
+                            self.workoutCollectionView.reloadData()
+                            self.spinner.stopAnimating()
                         }
                     }
                 }

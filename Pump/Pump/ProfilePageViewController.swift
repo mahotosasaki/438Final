@@ -11,9 +11,10 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import CoreData
+import FirebaseAuth
 
 class ProfilePageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     var userPosts = [Post]()
     var userStructure: User?
     let db = Firestore.firestore()
@@ -49,8 +50,21 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         picker.delegate = self
         picker.allowsEditing = true
         
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setup()
+    }
+    
+    func setup(){
+        posts = []
+        //fetchUserPosts()
         fetchUser()
-
         var array = [NSManagedObject]()
         array = CoreDataFunctions.getData()
         if array.count > 0{
@@ -64,34 +78,24 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
                 }
                 
             }
-//            let user = array.last
-//            if let base64image = user?.value(forKey: "profile_pic") as? String {
-//                let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
-//                self.profileImage.image = UIImage(data: data)
-//            }
-//            self.profileName.text = user?.value(forKey: "name") as? String ?? "name"
+            //            let user = array.last
+            //            if let base64image = user?.value(forKey: "profile_pic") as? String {
+            //                let data = Data(base64Encoded: base64image, options: .init(rawValue: 0))!
+            //                self.profileImage.image = UIImage(data: data)
+            //            }
+            //            self.profileName.text = user?.value(forKey: "name") as? String ?? "name"
         }
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setup()
-    }
-    
-    func setup(){
-        posts = []
-        fetchUserPosts()
-        
     }
     
     @IBAction func signOutUser(_ sender: UIBarButtonItem) {
         print("sign out")
+        let firebaseAuth = Auth.auth()
+        do {
+            try? firebaseAuth.signOut()
+            print("Sucessfully signed out")
+        }
         self.performSegue(withIdentifier: "signOut", sender: nil)
+        
     }
     
     // https://stackoverflow.com/questions/41717115/how-to-make-uiimagepickercontroller-for-camera-and-photo-library-at-the-same-tim
@@ -100,11 +104,11 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
             self.openCamera()
         }))
-
+        
         alert.addAction(UIAlertAction(title: "Library", style: .default, handler: { _ in
             self.openLibrary()
         }))
-
+        
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -139,34 +143,34 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         profileName.text = userDetails.name
         
         /*if we were to also show all the posts of the user on the profile page. not finished 
-        var user = "someguysid"
-        //need to get that persons id maybe
-        let postRefs = db.collection("posts")
-        userPosts = postRefs.whereField("userid", isEqualTo: currUser)
+         var user = "someguysid"
+         //need to get that persons id maybe
+         let postRefs = db.collection("posts")
+         userPosts = postRefs.whereField("userid", isEqualTo: currUser)
          */
     }
-
+    
     @IBAction func editProfile(_ sender: UIButton) {
         self.performSegue(withIdentifier: "toEditProfile", sender: userStructure)
     }
     
-
+    
     func fetchUserPosts() {
         DispatchQueue.global().async {
             do {
                 let userRef = self.db.collection("users")
                 let call = userRef.whereField("uid", isEqualTo: userID)
                 call.getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("No results: \(err)")
-                } else {
+                    if let err = err {
+                        print("No results: \(err)")
+                    } else {
                         for document in querySnapshot!.documents {
                             try? self.userStructure = document.data(as: User.self)
                         }
                     }
-                
+                    
                     DispatchQueue.main.async {
-            
+                        
                     }
                 }
             }
@@ -266,7 +270,7 @@ extension ProfilePageViewController: UICollectionViewDataSource, UICollectionVie
             editProf?.userStruc = sender as? User
         }
     }
-
+    
     
     
 }
