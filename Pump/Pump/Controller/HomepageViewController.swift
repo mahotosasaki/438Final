@@ -63,9 +63,10 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
                             var userInfo: User?
                             try? userInfo = document.data(as:User.self)
                             
-                            //print(userInfo)
+                            print(userInfo)
                             
-                            self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
+                            self.userFollowing = userInfo?.following ?? []
+//                            self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
                         }
                     }
                     DispatchQueue.main.async {
