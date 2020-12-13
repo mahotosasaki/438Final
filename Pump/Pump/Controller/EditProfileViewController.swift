@@ -111,7 +111,7 @@ class EditProfileViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if checkFields(){
             if validateSignUp() {
                 errorLabel.text = nil
-                self.db.collection("users").document(userID).setData(["email":  emailField.text, "name":nameField.text, "username": displayNameField.text, "height": height, "weight": weight, "experience": self.experienceField.text ?? "beginner"], merge: true)
+                self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner"], merge: true)
                 Auth.auth().currentUser?.updateEmail(to: emailField.text ?? "error email") { (error) in
                     // ...
                 }
