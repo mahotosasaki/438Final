@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseFirestoreSwift
+
+// Post struct
 struct Post: Codable {
     var id: String
     var exercises: [[String:String]]
@@ -16,19 +18,4 @@ struct Post: Codable {
     var userId: String
     var username: String
     var picturePath:String?
-}
-
-//replace var exercises with 3 arrays: exerciseTitle, exerciseReps, exerciseSets
-struct Workout: Codable {
-    var userID:String
-    var title:String
-    var likes:String
-    var picturePath:String
-    var exercises:[Exercise]
-}
-struct Exercise:Codable {
-    var number:String
-    var name:String
-    var reps:String
-    var sets:String
 }

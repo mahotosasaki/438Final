@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseFirestoreSwift
+
+// Notification struct
 struct Notification: Codable {
     var postId: String
     var postTitle: String

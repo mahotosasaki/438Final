@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// Table Cell for workout Title
 class TextFieldTableViewCell: UITableViewCell{
     @IBOutlet weak var workoutTitleTextField: UITextField!
 }

@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseFirestoreSwift
+
+// User struct
 struct User: Codable {
     var experience: String?
     var following: [String]?

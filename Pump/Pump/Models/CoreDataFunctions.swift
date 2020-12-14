@@ -12,6 +12,7 @@ import UIKit
 
 class CoreDataFunctions {
     
+    // Save user to Core Data
     static func save(_ user: User) {
         if checkForDuplicates(user) {return}
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
@@ -28,13 +29,13 @@ class CoreDataFunctions {
         userToSave.setValue(user.height, forKey: "height")
         userToSave.setValue(user.uid, forKey: "uid")
         userToSave.setValue(user.name, forKey: "name")
-//        userToSave.setValue(user., forKey: "password")
         userToSave.setValue(user.profile_pic, forKey: "profile_pic")
         userToSave.setValue(user.weight, forKey: "weight")
         
         appDelegate.saveContext()
     }
     
+    // Delete user from Core Data
     static func delete(_ deleteUser: NSManagedObject) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -44,6 +45,7 @@ class CoreDataFunctions {
         appDelegate.saveContext()
     }
     
+    // Get users stored Core Data
     static func getData() -> [NSManagedObject]{
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
@@ -88,6 +90,7 @@ class CoreDataFunctions {
         return false
     }
     
+    // Delete all Core Data
     static func deleteAllData()
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

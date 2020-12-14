@@ -52,6 +52,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         experienceField.inputAccessoryView = toolbar
         
         emailField.text = userStruc?.email
+        emailField.isUserInteractionEnabled = false
         nameField.text = userStruc?.name
         displayNameField.text = userStruc?.username
         experienceField.text = userStruc?.experience
@@ -229,6 +230,11 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
                 alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
+            }
+            else {
+                let alert = UIAlertController(title: "Saved", message: "Your profile has been updated", preferredStyle: .alert)
+                alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }

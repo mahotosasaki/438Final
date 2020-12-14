@@ -20,7 +20,6 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
     @IBOutlet weak var imageView: UIImageView!
     let imagePicker = UIImagePickerController()
     var picturePath = ""
-    var workout = Workout(userID: userID, title: "", likes: "0", picturePath: "", exercises: [])
     
     @IBOutlet weak var tableView: UITableView!
     var numTableViewSections = 6
@@ -202,15 +201,6 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         imageView.image = image
         dismiss(animated: true, completion: nil)
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
 

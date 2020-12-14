@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// Table Cell for Exercise Title
 class LabelTableViewCell: UITableViewCell {
     @IBOutlet weak var label:UILabel!
 }

@@ -148,7 +148,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let height = Double(self.heightField.text ?? "0.0")
         let weight = Double(self.weightField.text ?? "0.0")
         let db = Firestore.firestore()
-        db.collection("users").document(uid).setData(["uid": uid, "username": self.displayNameField.text ?? "", "following": [userID], "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": self.imageURL]) {(err) in
+        db.collection("users").document(uid).setData(["uid": uid, "username": self.displayNameField.text ?? "", "following": [uid], "height": height ?? 0.0, "weight": weight ?? 0.0, "experience": self.experienceField.text ?? "Beginner", "email": self.emailField.text!, "name": self.nameField.text!, "profile_pic": self.imageURL]) {(err) in
             
             if err != nil{
                 let alert = UIAlertController(title: "Error", message: "\(err?.localizedDescription ?? "Unknown error.") Please try again", preferredStyle: .alert)

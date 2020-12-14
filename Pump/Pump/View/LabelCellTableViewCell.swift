@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// Table Cell for Sets/Reps
 class LabelCellTableViewCell: UITableViewCell {
     @IBOutlet weak var label:UILabel!
     @IBOutlet weak var rightLabel:UILabel!

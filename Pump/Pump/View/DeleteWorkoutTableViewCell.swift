@@ -9,11 +9,13 @@
 import Foundation
 import UIKit
 
+// Cell for deleting an exercise
 class DeleteWorkoutTableViewCell: UITableViewCell {
     @IBOutlet weak var exerciseLabel:UILabel!
     @IBOutlet weak var deleteButton:UIButton!
 }
 
+// Cell for adding exercise
 class ExerciseWorkoutTableViewCell: UITableViewCell {
     @IBOutlet weak var exerciseLabel:UILabel!
 }
