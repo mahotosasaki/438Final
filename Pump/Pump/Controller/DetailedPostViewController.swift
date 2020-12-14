@@ -203,7 +203,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
                 return cell
             } else if indexPath.section % 4 == 1 {
                 let cell:LabelTableViewCell = tableView.dequeueReusableCell(withIdentifier: "labelCell") as! LabelTableViewCell
-                cell.label.text = "Exercise \(index)"
+                cell.label.text = "Exercise \(index + 1)"
                 return cell
             } else if indexPath.section % 4 == 2 {
                 let cell:LabelTableViewCell = tableView.dequeueReusableCell(withIdentifier: "labelCell") as! LabelTableViewCell
