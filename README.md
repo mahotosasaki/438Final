@@ -1,5 +1,11 @@
 # 438Final
 
+Group Members:
+-Akash Kaul
+-Mark Sigel
+-Mahoto Sasaki
+-Reshad Hamauon
+
 Users must first create an account and this will automatically sign you into the app. 
 If you want to sign out, you need to go to your profile page which will take you to the main screen where you can either sign in or sign up.
 
