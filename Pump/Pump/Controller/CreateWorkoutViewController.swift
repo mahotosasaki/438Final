@@ -11,6 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
+// View Controller for create workout tab
 class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     let db = Firestore.firestore()
@@ -51,10 +52,11 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         let height = tableView.frame.height
         let width = tableView.frame.width
         
+        //picker for selecting number of sets/reps
         pickerView = UIPickerView(frame: CGRect(x: x, y: y + height / 2 + 40, width: width, height: height / 2 - 40))
         pickerView.backgroundColor = UIColor.systemGray
         view.addSubview(pickerView)
-
+        
         pickerViewDoneButton = UIButton(frame: CGRect(x: x, y: y + height / 2, width: width, height: 40))
         pickerViewDoneButton.setTitle("Done", for: .normal)
         pickerViewDoneButton.backgroundColor = UIColor.green
@@ -63,7 +65,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         
         pickerView.delegate = self
         pickerView.dataSource = self
-                
+        
         hidePickerView()
         //tap gesture obtained from https://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
@@ -96,6 +98,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         tableData[textField.tag] = textField.text ?? ""
     }
     
+    // Triggered when post button pressed
     @IBAction func postButtonPressed(_ sender: UIButton){
         hidePickerView()
         
@@ -143,6 +146,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         
     }
     
+    // Add post to database
     func addPost(_ post: Post) {
         do {
             let _ = try db.collection("posts").document(post.id).setData(from: post)
@@ -163,7 +167,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
         }
     }
     
-    
+    // Select image for workout
     @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let alert = UIAlertController(title: "Choose Image", message: "Choose an image from your camera roll or take a picture", preferredStyle: .actionSheet)
         
@@ -204,6 +208,7 @@ class CreateWorkoutViewController: UIViewController, UITextFieldDelegate, UIImag
     
 }
 
+// Configures TableView for workout page
 extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return numTableViewSections
@@ -280,6 +285,7 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
+    // Triggered when 'x' button clicked
     @objc func buttonClicked(sender:UIButton){
         for _ in 1...numExerciseComponents {
             tableData.remove(at: sender.tag)
@@ -313,6 +319,7 @@ extension CreateWorkoutViewController: UITableViewDataSource, UITableViewDelegat
     
 }
 
+// Configures pickers for sets/reps
 extension CreateWorkoutViewController: UIPickerViewDataSource, UIPickerViewDelegate  {
     @objc func doneButtonPressed(){
         hidePickerView()
@@ -336,7 +343,7 @@ extension CreateWorkoutViewController: UIPickerViewDataSource, UIPickerViewDeleg
         tableData[chosenCellPickerViewSection] = "\(data)"
         tableView.reloadData()
     }
-        
+    
     func hidePickerView(){
         pickerView.isHidden = true
         pickerViewDoneButton.isHidden = true
@@ -349,6 +356,7 @@ extension CreateWorkoutViewController: UIPickerViewDataSource, UIPickerViewDeleg
         pickerView.selectRow(getPickerViewHistory(index: section), inComponent: 0, animated: true)
     }
     
+    // Stores last chosen picker value to bring up next time it is opened
     func getPickerViewHistory(index:Int) -> Int{
         var newIndex = index
         if index != 0 {

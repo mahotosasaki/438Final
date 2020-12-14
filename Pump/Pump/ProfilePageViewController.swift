@@ -13,6 +13,7 @@ import FirebaseStorage
 import CoreData
 import FirebaseAuth
 
+// View controller for own user profile pages
 class ProfilePageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var userPosts = [Post]()
@@ -26,7 +27,6 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     @IBOutlet weak var profileName: UILabel!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    
     
     let picker = UIImagePickerController()
     
@@ -59,10 +59,11 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         setup()
     }
     
+    // Get user data from Core Data
     func setup(){
         posts = []
-        fetchUserPosts()
         fetchUser()
+        fetchUserPosts()
         var array = [NSManagedObject]()
         array = CoreDataFunctions.getData()
         if array.count > 0{
@@ -79,6 +80,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
+    // Return to main page on sign out
     @IBAction func signOutUser(_ sender: UIBarButtonItem) {
         let firebaseAuth = Auth.auth()
         do {
@@ -88,20 +90,15 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         
     }
     
-    //changes profile page info with struct data
-    //need to finish filling in once we figure out how to upload and recieve profile pictures
-    func generatePageDetails(userDetails: User) {
-        profileName.text = userDetails.name
-    }
-    
+    // Transition to edit profile page with button click
     @IBAction func editProfile(_ sender: UIButton) {
         if let user = userStructure {
             self.performSegue(withIdentifier: "toEditProfile", sender: user)
         }
     }
     
-    
-    func fetchUserPosts() {
+    // Fetch user information from Firebase
+    func fetchUser () {
         DispatchQueue.global().async {
             do {
                 let userRef = self.db.collection("users")
@@ -123,7 +120,8 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
-    func fetchUser () {
+    // Fetch posts for current user
+    func fetchUserPosts () {
         DispatchQueue.global().async {
             do {
                 let postsRef = self.db.collection("posts")
@@ -148,7 +146,7 @@ class ProfilePageViewController: UIViewController, UIImagePickerControllerDelega
     
 }
 
-
+// Configures collection view for posts
 extension ProfilePageViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,numberOfItemsInSection section: Int) -> Int {
         return posts.count
@@ -200,6 +198,7 @@ extension ProfilePageViewController: UICollectionViewDataSource, UICollectionVie
         return cell
     }
     
+    // Transitions from post to detailed view of post
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "fromProfileToDetailedVC", sender: posts[indexPath.row].id)
     }

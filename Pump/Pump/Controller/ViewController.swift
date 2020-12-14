@@ -10,11 +10,12 @@ import UIKit
 import FirebaseFirestore
 import CoreData
 
+// Global variables
 var userID:String = ""
 var USERNAME: String = " "
 
 class ViewController: UIViewController {
-
+    
     let db = Firestore.firestore()
     var followingUsers: [User] = []
     
@@ -22,11 +23,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         //only run this if your device is not synced up with firebase
         //CoreDataFunctions.deleteAllData()
-        // Do any additional setup after loading the view.
     }
     
     
-
-
+    
+    
 }
 

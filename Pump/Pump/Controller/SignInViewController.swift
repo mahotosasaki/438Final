@@ -12,6 +12,7 @@ import FirebaseFirestore
 import CoreData
 import FirebaseStorage
 
+// View controller for sign in page
 class SignInViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     
@@ -32,6 +33,7 @@ class SignInViewController: UIViewController {
         signInButton.setTitleColor(.white, for: .normal)
     }
     
+    // EMAIL REGEX
     func checkEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         
@@ -39,10 +41,12 @@ class SignInViewController: UIViewController {
         return emailPred.evaluate(with: email)
     }
     
+    // VALIDATE EMAIL, PASSWORD, DISPLAY NAME
     func validateInput() -> Bool{
         return passwordField.text! != "" && checkEmail(emailField.text!)
     }
     
+    // Triggered when clicking Sign In button
     @IBAction func signIn(_ sender: Any) {
         if(validateInput()){
             //do auth
@@ -91,6 +95,7 @@ class SignInViewController: UIViewController {
         }
     }
     
+    // Get user associated with entered email and password
     func fetchUser(_ userID: String) {
         DispatchQueue.global().async {
             do{
@@ -112,6 +117,7 @@ class SignInViewController: UIViewController {
         }
     }
     
+    // Get user profile picture
     func fetchImage(_ imageURL: String, _ user: User) {
         if imageURL == "" {
             CoreDataFunctions.save(user)

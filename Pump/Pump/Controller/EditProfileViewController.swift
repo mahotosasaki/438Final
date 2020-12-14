@@ -14,6 +14,8 @@ import FirebaseFirestoreSwift
 import FirebaseStorage
 import CoreData
 
+// View Controller for Edit Profile page
+// Similar to sign up page
 class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     var userStruc: User?
@@ -75,6 +77,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         picker.delegate = self
         picker.allowsEditing = true
         
+        // Get user from core data
         var array = [NSManagedObject]()
         array = CoreDataFunctions.getData()
         if array.count > 0{
@@ -88,8 +91,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
                 
             }
         }
-        //experienceField
-        // Do any additional setup after loading the view.
     }
     
     @objc func selectDone() {
@@ -99,6 +100,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         experienceField.resignFirstResponder()
     }
     
+    // Triggered when save button clicked
     @IBAction func saveData(_ sender: Any) {
         let height = Double(heightField.text ?? "0.0")
         let weight = Double(weightField.text ?? "0.0")
@@ -142,15 +144,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
                 else {
                     self.sendToFirebase(userID)
                 }
-                
-                
-                //                self.db.collection("users").document(userID).setData(["email":  emailField.text ?? "", "name":nameField.text ?? "", "username": displayNameField.text ?? "", "height": height  ?? 0, "weight": weight ?? 0, "experience": self.experienceField.text ?? "beginner", "profile_pic": self.imageURL], merge: true)
-                Auth.auth().currentUser?.updateEmail(to: emailField.text ?? "error email") { (error) in
-                    // ...
-                }
-                Auth.auth().currentUser?.updatePassword(to: passwordField.text ?? "error password") { (error) in
-                    // ...
-                }
             }
             else {
                 if !checkEmail(emailField.text ?? "") && !checkPassword(passwordField.text ?? ""){
@@ -173,14 +166,17 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         
     }
     
+    // VALIDATE EMAIL, PASSWORD, DISPLAY NAME
     func validateSignUp() -> Bool{
         return checkEmail(emailField.text ?? "") && checkPassword(passwordField.text ?? "") && checkDisplayName(displayNameField.text ?? "")
     }
     
+    // CHECK FIELDS ARE FILLED
     func checkFields() -> Bool {
         return (nameField.text?.count ?? 0 > 0) && (passwordField.text?.count ?? 0 > 0) && (emailField.text?.count ?? 0 > 0) && (displayNameField.text?.count ?? 0 > 0)
     }
     
+    // EMAIL REGEX
     func checkEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
@@ -213,6 +209,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         return flag
     }
     
+    // Update user in Database
     func sendToFirebase(_ uid:String) {
         let height = Double(self.heightField.text ?? "0.0")
         let weight = Double(self.weightField.text ?? "0.0") ?? 0

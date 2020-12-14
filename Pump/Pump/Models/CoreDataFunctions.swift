@@ -49,7 +49,7 @@ class CoreDataFunctions {
     static func getData() -> [NSManagedObject]{
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-        
+            
             let managedContext = appDelegate.persistentContainer.viewContext
             
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "UserSaveData")
@@ -71,7 +71,7 @@ class CoreDataFunctions {
     static func checkForDuplicates(_ user: User) -> Bool {
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
-        
+            
             let managedContext = appDelegate.persistentContainer.viewContext
             
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "UserSaveData")
@@ -97,7 +97,7 @@ class CoreDataFunctions {
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "UserSaveData")
         fetchRequest.returnsObjectsAsFaults = false
-
+        
         do
         {
             let results = try managedContext.fetch(fetchRequest)

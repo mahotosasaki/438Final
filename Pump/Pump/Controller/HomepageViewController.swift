@@ -12,13 +12,14 @@ import FirebaseFirestore
 import FirebaseAuth
 import FirebaseFirestoreSwift
 import FirebaseStorage
+
+// View Controller for home page
 class HomepageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     @IBOutlet weak var workoutCollectionView: UICollectionView!
     var animating = false
     let db = Firestore.firestore()
     let spinner = UIActivityIndicatorView()
-    //this is hardcoded, needs to be the actual following list which probably needs to be pulled from coredata
     var userFollowing: [String] = []
     var followingUsers: [User] = []
     var posts: [Post] = []
@@ -36,6 +37,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         setup()
     }
     
+    // Clear data
     func setup(){
         animating = true
         spinner.center = self.view.center
@@ -48,6 +50,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         getFollowingIds()
     }
     
+    // Get user IDs of all users the current uesr follows
     func getFollowingIds(){
         DispatchQueue.global().async {
             do {
@@ -79,6 +82,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         
     }
     
+    // Get actual user information for given user IDs
     func fetchFollowingUsersObj() {
         DispatchQueue.global().async {
             do {
@@ -108,6 +112,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         }
     }
     
+    // Get all posts from followed users
     func fetchPosts(user:User) {
         DispatchQueue.global().async {
             do {
@@ -184,6 +189,7 @@ class HomepageViewController: UIViewController, UICollectionViewDataSource, UICo
         return cell
     }
     
+    // Move to detailed view when workout clicked on
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (!animating){
             self.performSegue(withIdentifier: "fromHomeToPost", sender: posts[indexPath.row].id)

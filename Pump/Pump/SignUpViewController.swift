@@ -6,14 +6,13 @@
 //  Copyright © 2020 mo3aru. All rights reserved.
 //
 
-//https://stackoverflow.com/questions/31728680/how-to-make-an-uipickerview-with-a-done-button
-
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 import CoreData
 
+// View controller for new user sign up page
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
@@ -46,6 +45,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Create gesture for image view to allow changing profile image
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         profileImage.layer.borderWidth=1.0
         profileImage.layer.masksToBounds = false
@@ -55,6 +55,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         profileImage.isUserInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
         
+        // Create picker for skill level
         let expPicker = UIPickerView()
         expPicker.delegate = self
         expPicker.dataSource = self
@@ -74,6 +75,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         toolbar.isTranslucent = true
         toolbar.sizeToFit()
         
+        //https://stackoverflow.com/questions/31728680/how-to-make-an-uipickerview-with-a-done-button
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(selectDone))
         
         toolbar.setItems([doneButton], animated: false)
@@ -89,6 +91,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         experienceField.resignFirstResponder()
     }
     
+    // Function called when you tap on the profile image view
     @objc func imageTapped(_ tapGestureRecognizer: UITapGestureRecognizer) {
         let alert = UIAlertController(title: "Choose Image", message: "Choose an image from your camera roll or take a picture", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
@@ -103,6 +106,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         present(alert, animated: true, completion: nil)
     }
     
+    // Opens camera to take a picture
     func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             imagePicker.sourceType = .camera
@@ -115,11 +119,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
+    // Opens photo library to select an image
     func openLibrary() {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
     
+    // Selects image from Image Picker
     func imagePickerController(_ imagePicker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         guard let image = info[.editedImage] as? UIImage else {return}

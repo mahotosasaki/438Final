@@ -13,10 +13,11 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
+// View Controller for displaying detailed workout view
 class DetailedPostViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let db = Firestore.firestore()
-
+    
     var post: Post?
     var postId: String!
     
@@ -24,41 +25,42 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
     let numExerciseComponents = 4 //Exercise struct has 4 fields
     let extraComponents = 1 //includes title and numlikes in tableview
     var fontSize:CGFloat = 14
-        
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         tableView.dataSource = self
         tableView.delegate = self
         fetchPost()
     }
     
+    // Check if user has liked post already
     func checkLike() {
         db.collection("notifications").whereField("postId", isEqualTo: postId ?? "").whereField("senderId", isEqualTo: userID).getDocuments { (querySnapshot, err) in
-             if let err = err {
-                 print(err)
-                 self.likeButton.titleLabel?.text = "Like"
-                 self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-             }
-             else {
-                 if querySnapshot!.documents.count == 0 {
-                     self.likeButton.titleLabel?.text = "Like"
-                     self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                 }
-                 else {
-                     self.likeButton.titleLabel?.text = "Liked"
-                     self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                 }
-
-             }
-         }
+            if let err = err {
+                print(err)
+                self.likeButton.titleLabel?.text = "Like"
+                self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            }
+            else {
+                if querySnapshot!.documents.count == 0 {
+                    self.likeButton.titleLabel?.text = "Like"
+                    self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                }
+                else {
+                    self.likeButton.titleLabel?.text = "Liked"
+                    self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                }
+                
+            }
+        }
     }
     
+    // Gets specific post information for given post
     func fetchPost(){
         DispatchQueue.global().async {
             do{
@@ -86,6 +88,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    // Gets image associated with post
     func fetchImage() {
         if let imageURL = post?.picturePath {
             if imageURL == "" {
@@ -99,7 +102,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
             }
             else {
                 let ref = Storage.storage().reference(forURL: imageURL)
-
+                
                 ref.downloadURL {(url, error) in
                     if error != nil {
                         print("uh oh")
@@ -123,6 +126,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    // Triggers when like button pressed
     @IBAction func likeButtonPressed(_ sender: Any) {
         db.collection("notifications").whereField("postId", isEqualTo: postId ?? "").whereField("senderId", isEqualTo: userID).getDocuments { (querySnapshot, err) in
             if let err = err {
@@ -137,11 +141,12 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
                     let notiID = querySnapshot!.documents[0].documentID
                     self.dislikePost(notiID)
                 }
-
+                
             }
         }
     }
     
+    // Updates post likes in database, likes post
     func likePost() {
         guard let p = post else {
             print("like failed")
@@ -155,6 +160,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         
     }
     
+    // Updates post lieks in database, unlikes post
     func dislikePost(_ notificationID: String) {
         guard let p = post else {
             print("like failed")
@@ -174,6 +180,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
         return numExercises * numExerciseComponents + extraComponents
     }
     
+    // Create cells for workout information
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         /*
          0->title
@@ -181,7 +188,7 @@ class DetailedPostViewController: UIViewController, UITableViewDataSource, UITab
          2->Exercise title
          3->SETS
          4->REPS
-
+         
          2->0
          3->0
          4->0

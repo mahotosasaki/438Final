@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import FirebaseFirestore
 
+// View Controller for search user page
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //used as the list of users will need to change to a struct instead
@@ -47,13 +48,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    // SEarch for users
     @IBAction func searchUsers(_ sender: UITextField) {
         let db = Firestore.firestore()
-
+        
         guard let search:String = sender.text else {
             return
         }
-
+        
         self.listOfProfiles.removeAll()
         
         if (search == ""){

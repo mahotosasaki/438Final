@@ -12,6 +12,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
+// View Controller for other users' profile pages
 class UserProfileViewController: UIViewController {
     let db = Firestore.firestore()
     
@@ -35,10 +36,11 @@ class UserProfileViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: "postCell")
-                
+        
         followButton.titleLabel?.adjustsFontSizeToFitWidth = true
     }
     
+    // Clear stored data
     override func viewWillAppear(_ animated: Bool) {
         profilePosts = []
         userFollowing = []
@@ -54,6 +56,7 @@ class UserProfileViewController: UIViewController {
         getFollowingIds()
     }
     
+    // Gets user profile image
     func getProfileImage(){
         let data = db.collection("users")
         let results = data.whereField("uid", isEqualTo: self.userProfile?.uid ?? "")
@@ -96,6 +99,7 @@ class UserProfileViewController: UIViewController {
         }
     }
     
+    // Gets users that already follow displayed user
     func getFollowingIds(){
         DispatchQueue.global().async {
             do {
@@ -108,7 +112,7 @@ class UserProfileViewController: UIViewController {
                         for document in querySnapshot!.documents{
                             var userInfo: User?
                             try? userInfo = document.data(as:User.self)
-                                                        
+                            
                             self.userFollowing = userInfo?.following ?? User(experience: "err", following: [], height: 0, name: "err", profile_pic: "err", uid: "err", username: "err", weight: 0, email: "err").following!
                         }
                     }
@@ -124,7 +128,7 @@ class UserProfileViewController: UIViewController {
         
     }
     
-    
+    // Triggered when follow button clicked, updates following list for user in database
     @IBAction func followUser(_ sender: UIButton) {
         DispatchQueue.global().async {
             do {
@@ -157,6 +161,7 @@ class UserProfileViewController: UIViewController {
         }
     }
     
+    // Gets all posts for user
     func fetchUserPosts() {
         DispatchQueue.global().async {
             do {

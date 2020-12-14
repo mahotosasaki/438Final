@@ -11,6 +11,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+// View Controller for Notification page
 class NotificationsViewController: UIViewController {
     
     let db = Firestore.firestore()
@@ -35,6 +36,7 @@ class NotificationsViewController: UIViewController {
         }
     }
     
+    // Get like notifications for current user from database
     func fetchNotifications () {
         DispatchQueue.global().async {
             do {
@@ -60,6 +62,7 @@ class NotificationsViewController: UIViewController {
     
 }
 
+// Configure table view for displaying notifications
 extension NotificationsViewController: UITableViewDataSource, UITableViewDelegate{
     func setupTableView() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "myCell")
